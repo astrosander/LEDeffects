@@ -1,0 +1,48 @@
+2 smooth colour change of the entire ribbon
+3 rotating rainbow
+4 random colour change
+5 running LED
+6 running LED train
+7 red and blue rotating
+8 half red and half blue rotating 
+9 random strobe
+10 single colour pulsation
+11 colour changing pulsation
+12 vertical incremental brightness change (for the ring)
+13 red LED frenzy
+14 random colour frenzy
+15 white blue red running in a circle (PATRIOTISM!)
+16 radiation icon pulsating
+17 red LED running in a circle
+18 white blue gradient (?)
+19 it's also bullshit
+20 red flashes going down
+21 crescent moon
+22 flame effect
+23 rainbow in a vertical plane (ring)
+24 pacman
+25 crazy random flashes
+26 police flashing
+27 RGB propeller
+28 random red flashes in the vertical plane
+29 greens running around randomly
+30 greens running around randomly
+31 something's broken
+32 something broke
+33 smooth colour filling
+34 running LEDs
+35 linear light
+36 running circle sectors (not working)
+37 very smooth rotating rainbow
+38 "random multi-coloured lights (1 - all dancing, 0 - random 1 diode)
+39 running lights
+40 random white flashes
+41 random flashes of white on a white background
+42 running every 3 (NUMBER OF LEDS MUST BE OTHER THAN OTHER)
+43 running every 3 rainbows (NUMBER OF LEDS MUST BE SMALL 3)
+44 strobe lights
+45 bouncing balls
+46 coloured bouncing balls
+888 long demo
+889 short demo
+999 pause
