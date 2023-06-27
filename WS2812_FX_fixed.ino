@@ -47,7 +47,7 @@ String help = "/all to change every pixel's colour\n"
               "46 colored bouncing balls."
               "888 long demo."
               "889 short demo."
-              "999 pause."ж
+              "999 pause.";
 
 
 #include "FastLED.h"          // библиотека для работы с лентой
