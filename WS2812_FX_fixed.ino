@@ -1,7 +1,13 @@
 String help = "🔸/all to change every pixel's colour\n"
               "🔸/mode to set mode\n"
               "🔸/help to get commands\n"
-              "🔸/bright to set brightness\n";
+              "🔸/bright to set brightness\n\n"
+              "🎨Colours at the maximum brightness\n"
+              "⚫/black\n"
+              "⚪️/white\n"
+              "🔴/red\n"
+              "🟢/green\n"
+              "🔵/blue\n";
 
 
 
@@ -144,8 +150,16 @@ void connectWiFi() {
     if (millis() > 15000) ESP.restart();
   }
 
+  change_mode(1);
+
+  digitalWrite(LED_BUILTIN, LOW);
+  one_color_all(0, 255, 0); 
+  LEDS.show();
+  delay(500);
+
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.println("Connected");
+  change_mode(3);
 }
 
 
@@ -270,7 +284,17 @@ bool hexToRGB(String hexColor, int pos) {
 
 void newMsg(FB_msg& msg) {
 
-  blink(500);
+  // blink(500);
+  int val = ledMode;
+  change_mode(1);
+
+  digitalWrite(LED_BUILTIN, LOW);
+  one_color_all(255, 0, 0); 
+  LEDS.show();
+  delay(500);
+  change_mode(val);
+
+  digitalWrite(LED_BUILTIN, HIGH);
 
   Serial.print(msg.chatID); // Chat ID 
   Serial.print(", ");
@@ -341,6 +365,12 @@ void newMsg(FB_msg& msg) {
   }
   
   if (msg.text == "/start" or msg.text == "/help") bot.sendMessage(help, msg.chatID);
+  else if(msg.text == "/black") {change_mode(1); one_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("⚫Successfully✅", msg.chatID);}
+  else if(msg.text == "/white") {change_mode(1); one_color_all(255, 255, 255); LEDS.show(); bot.sendMessage("⚪️Successfully✅", msg.chatID);}
+  else if(msg.text == "/green") {change_mode(1); one_color_all(0, 255, 0); LEDS.show(); bot.sendMessage("🟢Successfully✅", msg.chatID);}
+  else if(msg.text == "/red") {change_mode(1); one_color_all(255, 0, 0); LEDS.show(); bot.sendMessage("🔴Successfully✅", msg.chatID);}
+  else if(msg.text == "/blue") {change_mode(1); one_color_all(0, 0, 255); LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
+  
   else bot.sendMessage("Invaid command❌\n Use /help to list available commands", msg.chatID);
 }
 
@@ -349,13 +379,13 @@ void setup()
   Serial.begin(9600); // open port for communication
   pinMode(LED_BUILTIN, OUTPUT);
 
-  connectWiFi();
-  bot.attach(newMsg);
-  
   LEDS.setBrightness(max_bright); // limit maximum brightness
   LEDS.addLeds<WS2811, LED_DT, GRB>(leds, LED_COUNT); // settings for our ribbon (ribbon on WS2811, WS2812, WS2812B)
   one_color_all(0, 0, 0); // extinguish all LEDs
   LEDS.show(); // send command  
+
+  connectWiFi();
+  bot.attach(newMsg);
 }
 
 void loop() {
@@ -392,8 +422,7 @@ void loop() {
     case 30: bot.tick(); new_rainbow_loop(); break; // cool smooth spinning rainbow
     case 31: bot.tick(); strip_march_ccw(); break; // something broke
     case 32: bot.tick(); strip_march_cw(); break; // something broke
-    case 33: bot.tick(); colorWipe(0x00, 0xff, 0x00, thisdelay);
-      colorWipe(0x00, 0x00, 0x00, thisdelay); break; // colorWipe(0x00, 0xff, 0x00, thisdelay); // colorWipe(0x00, 0x00, 0x00, thisdelay); break; // colorWipe(0x00, 0x00, 0x00, thisdelay).
+    case 33: bot.tick(); colorWipe(0x00, 0xff, 0x00, thisdelay); colorWipe(0x00, 0x00, 0x00, thisdelay); break;
     case 34: bot.tick(); CylonBounce(0xff, 0, 0, 4, 10, thisdelay); break; // running LEDs
     case 35: bot.tick(); Fire(55, 120, thisdelay); break; // linear fire
     case 36: bot.tick(); NewKITT(0xff, 0, 0, 8, 10, thisdelay); break; // running lap sectors (not working)
