@@ -1,71 +1,75 @@
-String help = "/all to change every pixel's colour\n"
-              "Send /mode and one of these rates\n"
-              "2 smooth change of colours for the entire ribbon."
-              "3 a spinning rainbow."
-              "4 random colour change."
-              "5 running LED"
-              "6 a running train of LEDs."
-              "7 red and blue rotating."
-              "8 rotating half red and half blue"
-              "9 random strobe light."
-              "10 single colour pulsation"
-              "11 colour changing pulsation"
-              "12 smooth vertical brightness change (for ring)"
-              "13 red LED madness."
-              "14 random colour madness."
-              "15 white blue red running in a circle\n"
-              "16 radiation icon pulsating\n"
-              "17 red LED running in a circle\n"
-              "18 white and blue gradient."
-              "19 same thing's going on."
-              "20 red flashes going down"
-              "21 crescent moon."
-              "22 flame effect."
-              "23 rainbow in the vertical plane."
-              "24 Pac-Man."
-              "25 random flash madness."
-              "26 police flasher."
-              "27 RGB propeller."
-              "28 random red flashes in the vertical plane."
-              "29 greens running around randomly."
-              "30 greens running around randomly."
-              "31 something's broken."
-              "32 something's broken."
-              "33 smooth colour fills"
-              "34 running LEDs."
-              "35 line lights."
-              "36 running circle sectors (doesn't work)\n"
-              "37 very smooth rotating rainbows."
-              "38 random multi-coloured lights (1 - all dancing, 0 - random 1 diode)\n"
-              "39 running lights."
-              "40 random flashes of white"
-              "41 random flashes of white on a white background\n"
-              "42 running every 3 times."
-              "43 running every 3 rainbows."
-              "44 strobe lights."
-              "45 bouncing balls."
-              "46 colored bouncing balls."
-              "888 long demo."
-              "889 short demo."
-              "999 pause.";
+String help = "🔸/all to change every pixel's colour\n"
+              "🔸/mode to set mode\n"
+              "🔸/help to get commands\n"
+              "🔸/bright to set brightness\n";
 
 
-#include "FastLED.h"          // библиотека для работы с лентой
 
-#define LED_COUNT 120          // число светодиодов в кольце/ленте
-#define LED_DT 2U             // пин, куда подключен DIN ленты
+String Commands = "Enter '/mode a' where is number of mode\n📜List of modes:\n"
+                  "2 smooth change of colours for the entire ribbon. 🌈\n"
+                  "3 a spinning rainbow. 🌪️🌈\n"
+                  "4 random colour change. 🎨\n"
+                  "5 running LED 🏃‍♂️💡\n"
+                  "6 a running train of LEDs. 🚂💡\n"
+                  "7 red and blue rotating. 🔴🔵🔄\n"
+                  "8 rotating half red and half blue 🔴🔵🔄\n"
+                  "9 random strobe light. ⚡🌈\n"
+                  "10 single colour pulsation 💥🌈\n"
+                  "11 colour changing pulsation 🌈💥🌈\n"
+                  "12 smooth vertical brightness change (for ring) 🔆🔼🔽\n"
+                  "13 red LED madness. 🔴💡💥\n"
+                  "14 random colour madness. 🎨💥\n"
+                  "15 white blue red running in a circle 🏃‍♂️🔵⚪🔴🔄\n"
+                  "16 radiation icon pulsating ☢️💥🌈\n"
+                  "17 red LED running in a circle 🏃‍♂️🔴🔄\n"
+                  "18 white and blue gradient. ⚪🔵🌈\n"
+                  "19 same thing's going on. ⏭️🔄\n"
+                  "20 red flashes going down 🔴⬇️💥\n"
+                  "21 crescent moon. 🌙\n"
+                  "22 flame effect. 🔥🔥🔥\n"
+                  "23 rainbow in the vertical plane. 🌈🔼🔽\n"
+                  "24 Pac-Man. 🎮😄\n"
+                  "25 random flash madness. 💥💥💥\n"
+                  "26 police flasher. 🚨🔵🔴\n"
+                  "27 RGB propeller. 🔄🔴🔵⚪\n"
+                  "28 random red flashes in the vertical plane. 🔴💥🔼🔽\n"
+                  "29 greens running around randomly. 🟢🏃‍♂️🔄\n"
+                  "30 greens running around randomly. 🟢🏃‍♂️🔄\n"
+                  "31 something's broken ❌🔧\n"
+                  "32 something's broken. ❌🔧\n"
+                  "33 smooth colour fills 🎨🔆\n"
+                  "34 running LEDs. 🏃‍♂️💡\n"
+                  "35 line lights. 🚦💡\n"
+                  "36 running circle sectors (doesn't work) 🔴🟢🔵🔄\n"
+                  "37 very smooth rotating rainbows. 🌈🔄🌈\n"
+                  "38 random multi-coloured lights (1 - all dancing, 0 - random 1 diode) 🎨💃🔴🔵🟢🌈\n"
+                  "39 running lights. 🏃‍♂️💡\n"
+                  "40 random flashes of white 💥⚪\n"
+                  "41 random flashes of white on a white background 💥⚪🔳\n"
+                  "42 running every 3 times. 🏃‍♂️🔄⏰\n"
+                  "43 running every 3 rainbows. 🏃‍♂️🔄🌈⏰\n"
+                  "44 strobe lights. ⚡💡💥\n"
+                  "45 bouncing balls. 🏀⬆️⬇️\n"
+                  "46 colored bouncing balls. 🌈🏀⬆️⬇️\n"
+                  "888 long demo. 🎉🎮\n"
+                  "889 short demo. 🎉🎮\n"
+                  "999 pause. ⏸️";
 
-int max_bright = 250;         // максимальная яркость (0 - 255)
-int ledMode = 3;
-int f = 0;
+
+#include "FastLED.h"          // library for working with LED strip
+#include <FastBot.h>
+#include <vector> 
+
+#define LED_COUNT 120          // number of LEDs in the ring/strip
+#define LED_DT 2U             // pin to which the DIN of the strip is connected
 
 #define WIFI_SSID "login"
 #define WIFI_PASS "pass"
 #define BOT_TOKEN "xxxx"
 
-#include <FastBot.h>
-#include <vector> 
-FastBot bot(BOT_TOKEN);
+int max_bright = 250;         // maximum brightness (0 - 255)
+int ledMode = 3;
+int f = 0;
 
 byte ballColors[3][3] = {
   {0xff, 0, 0},
@@ -73,8 +77,10 @@ byte ballColors[3][3] = {
   {0   , 0   , 0xff},
 };
 
-// ---------------СЛУЖЕБНЫЕ ПЕРЕМЕННЫЕ-----------------
-int BOTTOM_INDEX = 0;        // светодиод начала отсчёта
+FastBot bot(BOT_TOKEN);
+
+// ---------------UTILITY VARIABLES-----------------
+int BOTTOM_INDEX = 0;        // start LED
 int TOP_INDEX = int(LED_COUNT / 2);
 int EVENODD = LED_COUNT % 2;
 struct CRGB leds[LED_COUNT];
@@ -97,27 +103,27 @@ int isat = 0;                //-SATURATION (0-255)
 int bouncedirection = 0;     //-SWITCH FOR COLOR BOUNCE (0-1)
 float tcount = 0.0;          //-INC VAR FOR SIN LOOPS
 int lcount = 0;              //-ANOTHER COUNTING VAR
-// ---------------СЛУЖЕБНЫЕ ПЕРЕМЕННЫЕ-----------------
+// ---------------UTILITY VARIABLES-----------------
 
+
+void blink(int t) // in miliseconds
+{
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(t);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(t);
+}
 void one_color_all(int cred, int cgrn, int cblu) {       //-SET ALL LEDS TO ONE COLOR
-  // Serial.println(cred);
-  // Serial.println(cgrn);
-  // Serial.println(cblu);
 
   for (int i = 0 ; i < LED_COUNT; i++ ) {
     leds[i].setRGB( cred, cgrn, cblu);
   }
 }
 
-void one_color_one(int cred, int cgrn, int cblu, int pos) {       //-SET ALL LEDS TO ONE COLOR
-  // Serial.println(cred);
-  // Serial.println(cgrn);
-  // Serial.println(cblu);
-  // Serial.println(pos);
+void one_color_one(int cred, int cgrn, int cblu, int pos) {       //-SET ONE COLOR TO ONE LED
 
   leds[pos].setRGB( cred, cgrn, cblu);
 }
-
 
 void one_color_allHSV(int ahue) {    //-SET ALL LEDS TO ONE COLOR (HSV)
   for (int i = 0 ; i < LED_COUNT; i++ ) {
@@ -126,19 +132,20 @@ void one_color_allHSV(int ahue) {    //-SET ALL LEDS TO ONE COLOR (HSV)
 }
 
 
-
-
 void connectWiFi() {
   delay(2000);
-  // Serial.println();
+  Serial.println();
 
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    // Serial.print(".");
+    Serial.print(".");
+    for(int i = 0; i < 5; i++) blink(50);
+
     if (millis() > 15000) ESP.restart();
   }
-  // Serial.println("Connected");
+
+  digitalWrite(LED_BUILTIN, HIGH);
+  Serial.println("Connected");
 }
 
 
@@ -202,8 +209,6 @@ void change_mode(int newmode) {
   ledMode = newmode;
 }
 
-
-
 String removeSpaces(String inputString) {
   String outputString = "";
 
@@ -239,7 +244,6 @@ std::vector<String> getWordsFromString(String inputString) {
   return words;
 }
 
-// обработчик сообщений
 
 bool hexToRGB(String hexColor, int pos) {
   // Remove the '#' character if present
@@ -264,49 +268,26 @@ bool hexToRGB(String hexColor, int pos) {
   return 0;
 }
 
-String ErrorMsg = "Incorrect!\nFormat: ""#4a7044"" or ""74, 112, 68""";
-String ErrorMsg1 = "Incorrect!\nFormat: '#4a7044, pos' or '74, 112, 68, pos""";
-
 void newMsg(FB_msg& msg) {
-  // выводим ID чата, имя юзера и текст сообщения
 
-  // Serial.print(msg.chatID);     // ID чата 
-  // Serial.print(", ");
-  // Serial.print(msg.username);   // логин
-  // Serial.print(", ");
-  // Serial.println(msg.text);     // текст
+  blink(500);
 
-  String inputString = msg.text+" ";
+  Serial.print(msg.chatID); // Chat ID 
+  Serial.print(", ");
+  Serial.print(msg.username); // login
+  Serial.print(", ");
+  Serial.println(msg.text); // text
+  
   std::vector<String> words = getWordsFromString(msg.text);
   
-  if (msg.text == "/stop") {
-    f = 0;
-    change_mode(3);
-    bot.sendMessage("Ready!", msg.chatID);
-  }
-
   if (words[0] == "/all") {
-    if(words.size() != 2 or words.size() != 4) bot.sendMessage("Send me color which u would like to set\nFormat: '/all #4a7044' or '/all 74 112 68'", msg.chatID);
-    // bot.sendMessage("Send me color which u would like to set\nFormat: '#4a7044' or '74, 112, 68'", msg.chatID);
-
-    // words[0] = words[0].substring(0, words[0].length() - 1);
-    // words[1] = words[1].substring(0, words[1].length() - 1);
-
-    for(int i = 1; i < 4; i++){
-      int val = words[i].toInt();
-      if(val < 0 or val > 255) 
-      {
-        bot.sendMessage("Pls enter all INTEGERS in the range [0; 255]", msg.chatID);       
-        return;  
-      }
-    }
+    if(words.size() != 2 and words.size() != 4) bot.sendMessage("❗Send me color which u would like to set\nFormat: '/all #4a7044' or '/all 74 112 68'", msg.chatID);
 
     change_mode(1);
     if(words[1][0] == '#')
     {
         String hexColor = words[1]; 
         hexColor.replace("#", "");
-
         
         String redHex = hexColor.substring(0, 2);
         String greenHex = hexColor.substring(2, 4);
@@ -316,209 +297,120 @@ void newMsg(FB_msg& msg) {
         int red = strtol(redHex.c_str(), NULL, 16);
         int green = strtol(greenHex.c_str(), NULL, 16);
         int blue = strtol(blueHex.c_str(), NULL, 16);
+
         one_color_all(red, green, blue);
-        
     }
-    else one_color_all(words[1].toInt(), words[2].toInt(), words[3].toInt());
+    else 
+    {
+      for(int i = 1; i < 4; i++){
+        int val = words[i].toInt();
+        if(val < 0 or val > 255) 
+        {
+          bot.sendMessage("❗Pls enter all INTEGERS in the range [0; 255]", msg.chatID);       
+          return;  
+        }
+        one_color_all(words[1].toInt(), words[2].toInt(), words[3].toInt());
+      }
+    } 
     
     LEDS.show();
+    bot.sendMessage("Successfully✅", msg.chatID);
+
+    return;
   }
 
-
-
-  // if(f)
-  // {
-  //   // if(f == 1)
-  //   // {
-  //   //   if(words.size() > 3 or words.size() == 2) bot.sendMessage(ErrorMsg, msg.chatID);
-  //   //   if(words.size() == 1) 
-  //   //   {
-  //   //     if(words[0][0] == '#')
-  //   //     {
-  //   //       if(hexToRGB(words[0], -1)) bot.sendMessage("Incorrect!", msg.chatID);
-  //   //       else bot.sendMessage("Succefully!", msg.chatID);
-  //   //     }
-        
-  //   //     else bot.sendMessage(ErrorMsg, msg.chatID);
-  //   //   }
-  //   //   else 
-  //   //   {
-  //   //     words[0] = words[0].substring(0, words[0].length() - 1);
-  //   //     words[1] = words[1].substring(0, words[1].length() - 1);
-
-  //   //     for(int i = 0; i < 3; i++){
-  //   //       int val = words[i].toInt();
-  //   //       if(val < 0 or val > 255) 
-  //   //       {
-  //   //         bot.sendMessage("Pls enter all INTEGERS in the range [0; 255]", msg.chatID);       
-  //   //         return;  
-  //   //       }
-  //   //     }
-
-  //   //     change_mode(1);
-
-  //   //     bot.sendMessage("Lolkkk", msg.chatID); 
-  //   //     one_color_all(words[0].toInt(), words[1].toInt(), words[2].toInt());
-  //   //     LEDS.show();
-        
-
-  //   //     bot.sendMessage("Succefully!", msg.chatID);
-  //   //   }
-  //   // }
-
-  //   // else
-  //   bot.sendMessage("Lodasdsa", msg.chatID);
-    
-  //   // if(words.size() != 4 and words.size() != 2) bot.sendMessage(ErrorMsg1, msg.chatID);
-  //   if(words.size() == 2) 
-  //   {
-  //     if(words[0][0] == '#')
-  //     {
-  //       if(hexToRGB(words[0], words[1].toInt())) bot.sendMessage(ErrorMsg1, msg.chatID);
-  //       else bot.sendMessage("Succefully!", msg.chatID);
-  //     }
-      
-  //     else bot.sendMessage(ErrorMsg1, msg.chatID);
-  //   }
-  //   else 
-  //   {
-  //     for(int i = 0; i < 3; i++) words[i] = words[i].substring(0, words[i].length() - 1);
-
-  //     for(int i = 0; i < 3; i++){
-  //       int val = words[i].toInt();
-  //       if(val < 0 or val > 255) 
-  //       {
-  //         bot.sendMessage("Pls enter all INTEGERS in the range [0; 255]", msg.chatID);       
-  //         return;  
-  //       }
-  //     }
-
-  //     // one_color_all(0, 0, 0);
-      
-  //     one_color_one(words[0].toInt(), words[1].toInt(), words[2].toInt(), words[3].toInt());
-  //     LEDS.show();
-  //     bot.sendMessage("Succefully!", msg.chatID);
-  //   }   
-  //   // return;
-  // }
-
-  // if (words[0] == "/draw") {
-    
-  //   change_mode(1);
-  //   one_color_all(0, 0, 0);
-  //   LEDS.show();
-
-  //   f = 2;
-  // }
-
-  if (words.size() == 2) {
+  if (words[0] == "/mode" or words[0] == "/bright") {
     int secondWord = words[1].toInt();
-    String com = words[0];
-    // Serial.println(words[1]);
-    // Serial.println(secondWord);
 
-    if (com == "/mode")
+    if (words[0] == "/mode")
     {
-      change_mode(secondWord);
-      bot.sendMessage("Successfully!", msg.chatID);
+      if(words.size() != 2) bot.sendMessage(Commands, msg.chatID);
+      else{
+        change_mode(secondWord);
+        bot.sendMessage("Successfully✅", msg.chatID);
+      }
     }
     else{
-      if (com == "/bright"){
-        if(secondWord >= 0 and secondWord <= 255){
-          LEDS.setBrightness(secondWord);
-          bot.sendMessage("Successfully!", msg.chatID);
-        } 
-        else bot.sendMessage("Pls enter sth INTEGER in the range [0; 255]", msg.chatID);         
+      if(words.size() == 2 and secondWord >= 0 and secondWord <= 255){
+        LEDS.setBrightness(secondWord);
+        bot.sendMessage("Successfully✅", msg.chatID);
       } 
-      else bot.sendMessage("May be you mean /mode or /bright", msg.chatID);
+      else bot.sendMessage("❗Pls enter sth INTEGER in the range [0; 255]", msg.chatID);  
     }
+    return;
   }
   
-  else {
-    if (msg.text == "/start" or msg.text == "/help") bot.sendMessage(help, msg.chatID);
-    // else bot.sendMessage(Ans, msg.chatID);
-  }
-
+  if (msg.text == "/start" or msg.text == "/help") bot.sendMessage(help, msg.chatID);
+  else bot.sendMessage("Invaid command❌\n Use /help to list available commands", msg.chatID);
 }
-
-/*
-  Стартовый режим
-  0 - все выключены
-  1 - все включены
-  3 - кольцевая радуга
-  888 - демо-режим
-*/
-
-// цвета мячиков для режима
 
 void setup()
 {
-  connectWiFi();\
+  Serial.begin(9600); // open port for communication
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  connectWiFi();
   bot.attach(newMsg);
-  // Serial.begin(9600);              // открыть порт для связи
-  LEDS.setBrightness(max_bright);  // ограничить максимальную яркость
-
-  LEDS.addLeds<WS2811, LED_DT, GRB>(leds, LED_COUNT);  // настрйоки для нашей ленты (ленты на WS2811, WS2812, WS2812B)
-  one_color_all(0, 0, 0);          // погасить все светодиоды
-  LEDS.show();                     // отослать команду
   
+  LEDS.setBrightness(max_bright); // limit maximum brightness
+  LEDS.addLeds<WS2811, LED_DT, GRB>(leds, LED_COUNT); // settings for our ribbon (ribbon on WS2811, WS2812, WS2812B)
+  one_color_all(0, 0, 0); // extinguish all LEDs
+  LEDS.show(); // send command  
 }
-
-
 
 void loop() {
   switch (ledMode) {
-    case 999: bot.tick();  break;                           // пазуа
-    case  2: bot.tick(); rainbow_fade(); break;            // плавная смена цветов всей ленты
-    case  3: bot.tick(); rainbow_loop();  break;            // крутящаяся радуга
-    case  4: bot.tick(); random_burst(); break;            // случайная смена цветов
-    case  5: bot.tick(); color_bounce(); break;            // бегающий светодиод
-    case  6: bot.tick(); color_bounceFADE(); break;        // бегающий паровозик светодиодов
-    case  7: bot.tick(); ems_lightsONE(); break;           // вращаются красный и синий
-    case  8: bot.tick(); ems_lightsALL(); break;           // вращается половина красных и половина синих
-    case  9: bot.tick(); flicker(); break;                 // случайный стробоскоп
-    case 10: bot.tick(); pulse_one_color_all(); break;     // пульсация одним цветом
-    case 11: bot.tick(); pulse_one_color_all_rev(); break; // пульсация со сменой цветов
-    case 12: bot.tick(); fade_vertical(); break;           // плавная смена яркости по вертикали (для кольца)
-    case 13: bot.tick(); rule30(); break;                  // безумие красных светодиодов
-    case 14: bot.tick(); random_march(); break;            // безумие случайных цветов
-    case 15: bot.tick(); rwb_march(); break;               // белый синий красный бегут по кругу (ПАТРИОТИЗМ!)
-    case 16: bot.tick(); radiation(); break;               // пульсирует значок радиации
-    case 17: bot.tick(); color_loop_vardelay(); break;     // красный светодиод бегает по кругу
-    case 18: bot.tick(); white_temps(); break;             // бело синий градиент (?)
-    case 19: bot.tick(); sin_bright_wave(); break;         // тоже хрень какая то
-    case 20: bot.tick(); pop_horizontal(); break;          // красные вспышки спускаются вниз
-    case 21: bot.tick(); quad_bright_curve(); break;       // полумесяц
-    case 22: bot.tick(); flame(); break;                   // эффект пламени
-    case 23: bot.tick(); rainbow_vertical(); break;        // радуга в вертикаьной плоскости (кольцо)
-    case 24: bot.tick(); pacman(); break;                  // пакман
-    case 25: bot.tick(); random_color_pop(); break;        // безумие случайных вспышек
-    case 26: bot.tick(); ems_lightsSTROBE(); break;        // полицейская мигалка
-    case 27: bot.tick(); rgb_propeller(); break;           // RGB пропеллер
-    case 28: bot.tick(); kitt(); break;                    // случайные вспышки красного в вертикаьной плоскости
-    case 29: bot.tick(); matrix(); break;                  // зелёненькие бегают по кругу случайно
-    case 30: bot.tick(); new_rainbow_loop(); break;        // крутая плавная вращающаяся радуга
-    case 31: bot.tick(); strip_march_ccw(); break;         // чёт сломалось
-    case 32: bot.tick(); strip_march_cw(); break;          // чёт сломалось
+    case 999: bot.tick(); break; // pause
+    case 2: bot.tick(); rainbow_fade(); break; // smooth colour change of the entire tape
+    case 3: bot.tick(); rainbow_loop(); break; // spinning rainbow
+    case 4: bot.tick(); random_burst(); break; // random colour change
+    case 5: bot.tick(); color_bounce(); break; // running LED
+    case 6: bot.tick(); color_bounceFADE(); break; // running LED
+    case 7: bot.tick(); ems_lightsONE(); break; // red and blue running
+    case 8: bot.tick(); ems_lightsALL(); break; // half red and half blue rotate
+    case 9: bot.tick(); flicker(); break; // random strobe
+    case 10: bot.tick(); pulse_one_color_all(); break; // single colour pulsing
+    case 11: bot.tick(); pulse_one_color_all_rev(); break; // pulsation with colour change
+    case 12: bot.tick(); fade_vertical(); break; // pulse_one_color_all_rev(); break; // pulse_rev (for ring)
+    case 13: bot.tick(); rule30(); break; // red LED fade
+    case 14: bot.tick(); random_march(); break; // random colour madness
+    case 15: bot.tick(); rwb_march(); break; // white blue red run in a circle (PATRIOTISM!)
+    case 16: bot.tick(); radiation(); break; // radiation icon pulses
+    case 17: bot.tick(); color_loop_vardelay(); break; // red LED is running in a circle
+    case 18: bot.tick(); white_temps(); break; // white_blue gradient (?)
+    case 19: bot.tick(); sin_bright_wave(); break; // this is also weird
+    case 20: bot.tick(); pop_horizontal(); break; // red flashes going down
+    case 21: bot.tick(); quad_bright_curve(); break; // crescent
+    case 22: bot.tick(); flame(); break; // flame effect
+    case 23: bot.tick(); rainbow_vertical(); break; // rainbow in the vertical plane (ring)
+    case 24: bot.tick(); pacman(); break; // pacman
+    case 25: bot.tick(); random_color_pop(); break; // random flash madness
+    case 26: bot.tick(); ems_lightsSTROBE(); break; // police flasher
+    case 27: bot.tick(); rgb_propeller(); break; // RGB propeller
+    case 28: bot.tick(); kitt(); break; // random red flashes in the vertical plane
+    case 29: bot.tick(); matrix(); break; // green flashes randomly
+    case 30: bot.tick(); new_rainbow_loop(); break; // cool smooth spinning rainbow
+    case 31: bot.tick(); strip_march_ccw(); break; // something broke
+    case 32: bot.tick(); strip_march_cw(); break; // something broke
     case 33: bot.tick(); colorWipe(0x00, 0xff, 0x00, thisdelay);
-      colorWipe(0x00, 0x00, 0x00, thisdelay); break;                                // плавное заполнение цветом
-    case 34: bot.tick(); CylonBounce(0xff, 0, 0, 4, 10, thisdelay); break;                      // бегающие светодиоды
-    case 35: bot.tick(); Fire(55, 120, thisdelay); break;                                       // линейный огонь
-    case 36: bot.tick(); NewKITT(0xff, 0, 0, 8, 10, thisdelay); break;                          // беготня секторов круга (не работает)
-    case 37: bot.tick(); rainbowCycle(thisdelay); break;                                        // очень плавная вращающаяся радуга
-    case 38: bot.tick(); TwinkleRandom(20, thisdelay, 1); break;                                // случайные разноцветные включения (1 - танцуют все, 0 - случайный 1 диод)
-    case 39: bot.tick(); RunningLights(0xff, 0xff, 0x00, thisdelay); break;                     // бегущие огни
-    case 40: bot.tick(); Sparkle(0xff, 0xff, 0xff, thisdelay); break;                           // случайные вспышки белого цвета
-    case 41: bot.tick(); SnowSparkle(0x10, 0x10, 0x10, thisdelay, random(100, 1000)); break;    // случайные вспышки белого цвета на белом фоне
-    case 42: bot.tick(); theaterChase(0xff, 0, 0, thisdelay); break;                            // бегущие каждые 3 (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ НЕЧЁТНОЕ)
-    case 43: bot.tick(); theaterChaseRainbow(thisdelay); break;                                 // бегущие каждые 3 радуга (ЧИСЛО СВЕТОДИОДОВ ДОЛЖНО БЫТЬ КРАТНО 3)
-    case 44: bot.tick(); Strobe(0xff, 0xff, 0xff, 10, thisdelay, 1000); break;                  // стробоскоп
+      colorWipe(0x00, 0x00, 0x00, thisdelay); break; // colorWipe(0x00, 0xff, 0x00, thisdelay); // colorWipe(0x00, 0x00, 0x00, thisdelay); break; // colorWipe(0x00, 0x00, 0x00, thisdelay).
+    case 34: bot.tick(); CylonBounce(0xff, 0, 0, 4, 10, thisdelay); break; // running LEDs
+    case 35: bot.tick(); Fire(55, 120, thisdelay); break; // linear fire
+    case 36: bot.tick(); NewKITT(0xff, 0, 0, 8, 10, thisdelay); break; // running lap sectors (not working)
+    case 37: bot.tick(); rainbowCycle(thisdelay); break; // a very smooth spinning rainbow
+    case 38: bot.tick(); TwinkleRandom(20, thisdelay, 1); break; // random multi-colored switch-on (1 - all dancing, 0 - random 1 diode)
+    case 39: bot.tick(); RunningLights(0xff, 0xff, 0x00, thisdelay); break; // running lights
+    case 40: bot.tick(); Sparkle(0xff, 0xff, 0xff, thisdelay); break; // random white flashes
+    case 41: bot.tick(); SnowSparkle(0x10, 0x10, 0x10, thisdelay, random(100, 1000)); break; // random white flash on white background
+    case 42: bot.tick(); theaterChase(0xff, 0, 0, thisdelay); break; // running every 3 (NUMBER OF LEDs MUST BE OTHER than 0)
+    case 43: bot.tick(); theaterChaseRainbow(thisdelay); break; // running every 3 rainbows (NUMBER OF LEDs MUST BE QUITE 3)
+    case 44: bot.tick(); Strobe(0xff, 0xff, 0xff, 10, thisdelay, 1000); break; // strobe
 
-    case 45: bot.tick(); BouncingBalls(0xff, 0, 0, 3); break;                                   // прыгающие мячики
-    case 46: bot.tick(); BouncingColoredBalls(3, ballColors); break;                            // прыгающие мячики цветные
+    case 45: bot.tick(); BouncingBalls(0xff, 0, 0, 3); break; // bouncing balls
+    case 46: bot.tick(); BouncingColoredBalls(3, ballColors); break; // bouncing colored balls
 
-    case 888: bot.tick(); demo_modeA(); break;             // длинное демо
-    case 889: bot.tick(); demo_modeB(); break;             // короткое демо
+    case 888: bot.tick(); demo_modeA(); break; // long demo
+    case 889: bot.tick(); demo_modeB(); break; // short demo
     default: bot.tick();
   }
 }
