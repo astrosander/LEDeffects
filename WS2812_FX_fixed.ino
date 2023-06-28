@@ -7,7 +7,8 @@ String help = "🔸/all to change every pixel's colour\n"
               "⚪️/white\n"
               "🔴/red\n"
               "🟢/green\n"
-              "🔵/blue\n";
+              "🔵/blue\n"
+              "🖌️/start_drawing drawing pixel-to-pixel\n";
 
 
 
@@ -74,7 +75,7 @@ String MyId = "xxxxxxxxxx";
 
 int max_bright = 255;         // maximum brightness (0 - 255)
 int ledMode = 2;
-int f = 0;
+bool f = 0;
 
 byte ballColors[3][3] = {
   {0xff, 0, 0},
@@ -111,6 +112,14 @@ int lcount = 0;              //-ANOTHER COUNTING VAR
 // ---------------UTILITY VARIABLES-----------------
 
 
+struct Color {
+  byte r;
+  byte g;
+  byte b;
+};
+
+std::vector<Color> CurCol(LED_COUNT);
+
 void blink(int t) // in miliseconds
 {
     digitalWrite(LED_BUILTIN, HIGH);
@@ -118,17 +127,17 @@ void blink(int t) // in miliseconds
     digitalWrite(LED_BUILTIN, LOW);
     delay(t);
 }
-void one_color_all(int cred, int cgrn, int cblu) {       //-SET ALL LEDS TO ONE COLOR
-
+void one_color_all(int cred, int cgrn, int cblu) {       //-SET ALL LEDS TO ONE COLOR  
   for (int i = 0 ; i < LED_COUNT; i++ ) {
     leds[i].setRGB( cred, cgrn, cblu);
   }
 }
 
-void one_color_one(int cred, int cgrn, int cblu, int pos) {       //-SET ONE COLOR TO ONE LED
+void cone_color_all(int cred, int cgrn, int cblu) {for(int i = 0 ; i < CurCol.size(); i++) { CurCol[i].r = cred; CurCol[i].g = cgrn; CurCol[i].b = cblu; } }
 
-  leds[pos].setRGB( cred, cgrn, cblu);
-}
+void custom_color(){ for (int i = 0 ; i < LED_COUNT; i++ ) leds[i].setRGB(CurCol[i].r, CurCol[i].g, CurCol[i].b);}
+
+void one_color_one(int cred, int cgrn, int cblu, int pos) { leds[pos].setRGB( cred, cgrn, cblu); } 
 
 void one_color_allHSV(int ahue) {    //-SET ALL LEDS TO ONE COLOR (HSV)
   for (int i = 0 ; i < LED_COUNT; i++ ) {
@@ -163,7 +172,7 @@ void connectWiFi() {
 
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.println("Connected");
-  change_mode(3);
+  change_mode(2);
 }
 
 
@@ -221,6 +230,7 @@ void change_mode(int newmode) {
     case 104: one_color_all(255, 255, 0); LEDS.show(); break; //---ALL COLOR X
     case 105: one_color_all(0, 255, 255); LEDS.show(); break; //---ALL COLOR Y
     case 106: one_color_all(255, 0, 255); LEDS.show(); break; //---ALL COLOR Z
+    case 1000: custom_color(); LEDS.show(); break;
   }
   bouncedirection = 0;
   one_color_all(0, 0, 0);
@@ -298,42 +308,97 @@ bool dir = true;
 
 void newMsg(FB_msg& msg) {
 
-  int val = ledMode;
-  
-  digitalWrite(LED_BUILTIN, LOW);
-  change_mode(1);
-
-  // blink(500);
-
-  for(int i = 0; i <= 255; i+=5)
-  {
-    one_color_all(i, 0, 0); 
-    LEDS.show();
-  }
-  for(int i = 255; i >= 0; i-=5)
-  {
-    one_color_all(i, 0, 0); 
-    LEDS.show();
-  }
-  change_mode(val);
-
-  digitalWrite(LED_BUILTIN, HIGH);
-
   String review = msg.chatID + ", " + msg.username + ", " + msg.text;
 
-  if(MyId != msg.chatID)
-  {
-    bot.sendMessage(review, MyId);
-  }
+  if(MyId != msg.chatID) bot.sendMessage(review, MyId);
   
-  Serial.print(review); 
+  Serial.println(review); 
   
   std::vector<String> words = getWordsFromString(msg.text);
-  
+
+  if (msg.text == "/start_drawing")
+  {
+    f = 1;
+    change_mode(1000); cone_color_all(0, 0, 0); LEDS.show(); 
+    bot.sendMessage("Successfully✅", msg.chatID);
+    bot.sendMessage("Send me color which u would like to set\nFormat: '/pxl #4a7044 pos' or '/pxl 74 112 68 pos'\n❗Type /stop_drawing to stop drawing", msg.chatID);
+    return;
+  }
+  if (msg.text == "/stop_drawing")
+  {
+    f = 0;
+    change_mode(2);
+    bot.sendMessage("Successfully✅", msg.chatID);
+    return;
+  }
+
+  if (words[0] == "/pxl") {
+    if(!f) {bot.sendMessage("❗Send /start_drawing to start drawing", msg.chatID); return; }
+    if(words.size() != 3 and words.size() != 5) {bot.sendMessage("❗Send me color and position which u would like to set\nFormat: '/pxl #4a7044 pos' or '/pxl 74 112 68 pos'", msg.chatID);return;}
+    
+    if(words[1][0] == '#')
+    {
+        int pos = words[2].toInt();
+        if(pos < 0 or pos >= LED_COUNT) 
+        {
+          bot.sendMessage("❗Pls enter all INTEGERS in the range [0; "+ String(LED_COUNT - 1) +"]", msg.chatID);       
+          return;  
+        }
+
+        String hexColor = words[1]; 
+        hexColor.replace("#", "");
+        
+        String redHex = hexColor.substring(0, 2);
+        String greenHex = hexColor.substring(2, 4);
+        String blueHex = hexColor.substring(4, 6);
+
+        CurCol[pos].r = strtol(redHex.c_str(), NULL, 16);
+        CurCol[pos].g = strtol(greenHex.c_str(), NULL, 16);
+        CurCol[pos].b = strtol(blueHex.c_str(), NULL, 16);
+    }
+    else 
+    {
+      int pos = words[4].toInt();
+      if(pos < 0 or pos >= LED_COUNT) 
+      {
+        bot.sendMessage("❗Pls enter all INTEGERS in the range [0; "+ String(LED_COUNT - 1) +"]", msg.chatID);       
+        return;  
+      }
+      
+      for(int i = 1; i < 4; i++){
+        int val = words[i].toInt();
+        if(val < 0 or val > 255) 
+        {
+          bot.sendMessage("❗Pls enter all INTEGERS in the range [0; 255]", msg.chatID);       
+          return;  
+        }
+        
+        CurCol[pos].r = words[1].toInt();
+        CurCol[pos].g = words[2].toInt();
+        CurCol[pos].b = words[3].toInt();
+      }
+    } 
+    
+    LEDS.show();
+    bot.sendMessage("Successfully✅", msg.chatID);
+
+    return;
+  }
+
+  if(f) {bot.sendMessage("You are currently drawing\n❗Send /stop_drawing to stop drawing", msg.chatID); return; }
+
+  int val = ledMode;  
+  digitalWrite(LED_BUILTIN, LOW);
+  change_mode(1);
+  for(int i = 0; i <= 255; i+=5) {one_color_all(i, 0, 0); LEDS.show();}
+  for(int i = 255; i >= 0; i-=5) {one_color_all(i, 0, 0); LEDS.show();}
+  change_mode(val);
+  digitalWrite(LED_BUILTIN, HIGH);
+
   if (words[0] == "/all") {
     if(words.size() != 2 and words.size() != 4) bot.sendMessage("❗Send me color which u would like to set\nFormat: '/all #4a7044' or '/all 74 112 68'", msg.chatID);
 
-    change_mode(1);
+    change_mode(1000);
     if(words[1][0] == '#')
     {
         String hexColor = words[1]; 
@@ -343,12 +408,11 @@ void newMsg(FB_msg& msg) {
         String greenHex = hexColor.substring(2, 4);
         String blueHex = hexColor.substring(4, 6);
 
-        // Convert hex values to decimal values
         int red = strtol(redHex.c_str(), NULL, 16);
         int green = strtol(greenHex.c_str(), NULL, 16);
         int blue = strtol(blueHex.c_str(), NULL, 16);
 
-        one_color_all(red, green, blue);
+        cone_color_all(red, green, blue);
     }
     else 
     {
@@ -359,11 +423,10 @@ void newMsg(FB_msg& msg) {
           bot.sendMessage("❗Pls enter all INTEGERS in the range [0; 255]", msg.chatID);       
           return;  
         }
-        one_color_all(words[1].toInt(), words[2].toInt(), words[3].toInt());
+        cone_color_all(words[1].toInt(), words[2].toInt(), words[3].toInt());
       }
     } 
     
-    LEDS.show();
     bot.sendMessage("Successfully✅", msg.chatID);
 
     return;
@@ -391,11 +454,11 @@ void newMsg(FB_msg& msg) {
   }
   
   if (msg.text == "/start" or msg.text == "/help") bot.sendMessage(help, msg.chatID);
-  else if(msg.text == "/black") {change_mode(1); one_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("⚫Successfully✅", msg.chatID);}
-  else if(msg.text == "/white") {change_mode(1); one_color_all(255, 255, 255); LEDS.show(); bot.sendMessage("⚪️Successfully✅", msg.chatID);}
-  else if(msg.text == "/green") {change_mode(1); one_color_all(0, 255, 0); LEDS.show(); bot.sendMessage("🟢Successfully✅", msg.chatID);}
-  else if(msg.text == "/red") {change_mode(1); one_color_all(255, 0, 0); LEDS.show(); bot.sendMessage("🔴Successfully✅", msg.chatID);}
-  else if(msg.text == "/blue") {change_mode(1); one_color_all(0, 0, 255); LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
+  else if(msg.text == "/black" or msg.text == "/off" or msg.text == "/clear") {change_mode(1000); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("⚫Successfully✅", msg.chatID);}
+  else if(msg.text == "/white") {change_mode(1000); cone_color_all(255, 255, 255); LEDS.show(); bot.sendMessage("⚪️Successfully✅", msg.chatID);}
+  else if(msg.text == "/green") {change_mode(1000); cone_color_all(0, 255, 0); LEDS.show(); bot.sendMessage("🟢Successfully✅", msg.chatID);}
+  else if(msg.text == "/red") {change_mode(1000); cone_color_all(255, 0, 0); LEDS.show(); bot.sendMessage("🔴Successfully✅", msg.chatID);}
+  else if(msg.text == "/blue") {change_mode(1000); cone_color_all(0, 0, 255); LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
   
   else bot.sendMessage("Invaid command❌\n Use /help to list available commands", msg.chatID);
 }
@@ -412,10 +475,12 @@ void setup()
 
   connectWiFi();
   bot.attach(newMsg);
+  
 }
 
 void loop() {
   switch (ledMode) {
+    case 1000: bot.tick(); custom_color(); LEDS.show(); break; 
     case 999: bot.tick(); break; // pause
     case 2: bot.tick(); rainbow_fade(); break; // smooth colour change of the entire tape
     case 3: bot.tick(); rainbow_loop(); break; // spinning rainbow
