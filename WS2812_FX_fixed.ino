@@ -55,8 +55,6 @@ String Commands = "Enter '/mode a' where is number of mode\n📜List of modes:\n
                   "42 running every 3 times. 🏃‍♂️🔄⏰\n"
                   "43 running every 3 rainbows. 🏃‍♂️🔄🌈⏰\n"
                   "44 strobe lights. ⚡💡💥\n"
-                  "45 bouncing balls. 🏀⬆️⬇️\n"
-                  "46 colored bouncing balls. 🌈🏀⬆️⬇️\n"
                   "888 long demo. 🎉🎮\n"
                   "889 short demo. 🎉🎮\n"
                   "999 pause. ⏸️";
@@ -66,15 +64,16 @@ String Commands = "Enter '/mode a' where is number of mode\n📜List of modes:\n
 #include <FastBot.h>
 #include <vector> 
 
-#define LED_COUNT 120          // number of LEDs in the ring/strip
+#define LED_COUNT 113          // number of LEDs in the ring/strip
 #define LED_DT 2U             // pin to which the DIN of the strip is connected
 
 #define WIFI_SSID "login"
 #define WIFI_PASS "pass"
-#define BOT_TOKEN "xxxx"
+#define BOT_TOKEN "aaaaaaaaaa:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+String MyId = "xxxxxxxxxx";
 
-int max_bright = 250;         // maximum brightness (0 - 255)
-int ledMode = 3;
+int max_bright = 255;         // maximum brightness (0 - 255)
+int ledMode = 2;
 int f = 0;
 
 byte ballColors[3][3] = {
@@ -141,10 +140,11 @@ void one_color_allHSV(int ahue) {    //-SET ALL LEDS TO ONE COLOR (HSV)
 void connectWiFi() {
   delay(2000);
   Serial.println();
-
+  
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
+
     for(int i = 0; i < 5; i++) blink(50);
 
     if (millis() > 15000) ESP.restart();
@@ -153,9 +153,13 @@ void connectWiFi() {
   change_mode(1);
 
   digitalWrite(LED_BUILTIN, LOW);
-  one_color_all(0, 255, 0); 
-  LEDS.show();
-  delay(500);
+
+  for(int i = 0; i <= 255; i+=5)
+  {
+    one_color_all(0, i, 0); 
+    LEDS.show();
+    delay(5);
+  }
 
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.println("Connected");
@@ -282,25 +286,47 @@ bool hexToRGB(String hexColor, int pos) {
   return 0;
 }
 
+byte getBrightCRT(byte val)
+{
+  return ((long)val * val * val + 130305) >> 16;
+}
+
+uint32_t tmr;
+int val = 0;
+bool dir = true;
+
+
 void newMsg(FB_msg& msg) {
 
-  // blink(500);
   int val = ledMode;
+  
+  digitalWrite(LED_BUILTIN, LOW);
   change_mode(1);
 
-  digitalWrite(LED_BUILTIN, LOW);
-  one_color_all(255, 0, 0); 
-  LEDS.show();
-  delay(500);
+  // blink(500);
+
+  for(int i = 0; i <= 255; i+=5)
+  {
+    one_color_all(i, 0, 0); 
+    LEDS.show();
+  }
+  for(int i = 255; i >= 0; i-=5)
+  {
+    one_color_all(i, 0, 0); 
+    LEDS.show();
+  }
   change_mode(val);
 
   digitalWrite(LED_BUILTIN, HIGH);
 
-  Serial.print(msg.chatID); // Chat ID 
-  Serial.print(", ");
-  Serial.print(msg.username); // login
-  Serial.print(", ");
-  Serial.println(msg.text); // text
+  String review = msg.chatID + ", " + msg.username + ", " + msg.text;
+
+  if(MyId != msg.chatID)
+  {
+    bot.sendMessage(review, MyId);
+  }
+  
+  Serial.print(review); 
   
   std::vector<String> words = getWordsFromString(msg.text);
   
