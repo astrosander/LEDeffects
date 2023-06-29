@@ -1145,7 +1145,7 @@ void BouncingBalls(byte red, byte green, byte blue, int BallCount) {
     Dampening[i] = 0.90 - float(i) / pow(BallCount, 2);
   }
 
-  while (true) {
+ while (millis() - last_change < change_time) {
     for (int i = 0 ; i < BallCount ; i++) {
       TimeSinceLastBounce[i] =  millis() - ClockTimeSinceLastBounce[i];
       Height[i] = 0.5 * Gravity * pow( TimeSinceLastBounce[i] / 1000 , 2.0 ) + ImpactVelocity[i] * TimeSinceLastBounce[i] / 1000;
@@ -1192,7 +1192,7 @@ void BouncingColoredBalls(int BallCount, byte colors[][3]) {
     Dampening[i] = 0.90 - float(i) / pow(BallCount, 2);
   }
 
-  while (true) {
+  while (millis() - last_change < change_time) {
     for (int i = 0 ; i < BallCount ; i++) {
       TimeSinceLastBounce[i] =  millis() - ClockTimeSinceLastBounce[i];
       Height[i] = 0.5 * Gravity * pow( TimeSinceLastBounce[i] / 1000 , 2.0 ) + ImpactVelocity[i] * TimeSinceLastBounce[i] / 1000;
