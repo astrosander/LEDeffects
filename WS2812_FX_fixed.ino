@@ -384,6 +384,8 @@ void newMsg(FB_msg& msg) {
 
     return;
   }
+  
+  if (msg.text == "/restart") ESP.restart();
 
   if(f) {bot.sendMessage("You are currently drawing\n❗Send /stop_drawing to stop drawing", msg.chatID); return; }
 
