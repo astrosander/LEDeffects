@@ -1,11 +1,14 @@
 # LEDeffects
 # First steps🐾
-• Assemble according to the above scheme
+<h4>• Assemble according to the above scheme</h4>
 <img align="center"  width="800px" src="Design/sheme.png" />
 
-•  <a href="https://github.com/astrosander/LEDeffects/archive/refs/heads/main.zip">Download</a> repository
-•  Unarchive
-•  Open <a href="https://github.com/astrosander/LEDeffects/blob/main/MAIN/MAIN.ino">./Main/MAIN.ino</a>
+<h4>•  <a href="https://github.com/astrosander/LEDeffects/archive/refs/heads/main.zip">Download</a> repository</h4>
+
+<h4>•  Unarchive</h4>
+
+<h4>•  Open <a href="https://github.com/astrosander/LEDeffects/blob/main/MAIN/MAIN.ino">./Main/MAIN.ino</a></h4>
+
 • Edit ```8-11``` lines:
 
 ```8```- Enter your WiFi login
@@ -18,8 +21,10 @@
 ```11``` - Enter Telegram ID, which you got with <a href="https://github.com/astrosander/LEDeffects/edit/main/README.md#how-to-get-my-id">@IDBot</a>
 
   
-• Upload code to your board
-• Go to your bot and send ```/start```
+<h4>• Upload code to your board</h4>
+
+• Go to your bot and send 
+```/start```
 
 
 # How to make telegram-bot <img align="center"  width="40px" src="Design/bot_father.png" /> 
