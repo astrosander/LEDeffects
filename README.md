@@ -7,7 +7,7 @@
 
 <h4>•  Unarchive</h4>
 
-<h4>•  Open <a href="https://github.com/astrosander/LEDeffects/blob/main/MAIN/MAIN.ino">./Main/MAIN.ino</a></h4>
+<h4>•  Open <a href="https://github.com/astrosander/LEDeffects/blob/main/MAIN/MAIN.ino">./MAIN/MAIN.ino</a></h4>
 
 • Edit ```8-11``` lines:
 
