@@ -1,6 +1,7 @@
 String help = "🔸/all to change every pixel's colour\n"
               "🔸/mode to set mode\n"
               "🔸/help to get commands\n"
+              "🔸/restart to restart ESP\n"
               "🔸/bright to set brightness\n\n"
               "🎨Colours at the maximum brightness\n"
               "⚫/black\n"
@@ -135,7 +136,7 @@ void newMsg(FB_msg& msg) {
   
   std::vector<String> words = getWordsFromString(msg.text);
 
-  if (msg.text == "/reset") {bot.sendMessage("Proccecing🔁", msg.chatID);rst = 1;return;}
+  if (msg.text == "/reset" or msg.text == "/restart") {bot.sendMessage("Proccecing🔁", msg.chatID);rst = 1;return;}
 
   if (msg.text == "/start_drawing")
   {
