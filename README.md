@@ -11,19 +11,19 @@
 
 • Edit ```8-11``` lines:
 
-```8```- Enter your WiFi login
+```8```- Enter Your WiFi login
 
-```9``` - Enter your WiFi password
+```9``` - Enter Your WiFi password
 
-```10``` - Enter Bot's Token, which you got with 
+```10``` - Enter Bot's Token, which You got with 
 <a href="https://github.com/astrosander/LEDeffects/edit/main/README.md#how-to-make-telegram-bot">@BotFather</a>
 
-```11``` - Enter Telegram ID, which you got with <a href="https://github.com/astrosander/LEDeffects/edit/main/README.md#how-to-get-my-id">@IDBot</a>
+```11``` - Enter Telegram ID, which You got with <a href="https://github.com/astrosander/LEDeffects/edit/main/README.md#how-to-get-my-id">@IDBot</a>
 
   
-<h4>• Upload code to your board</h4>
+<h4>• Upload code to Your board</h4>
 
-• Go to your bot and send 
+• Go to Your bot and send 
 ```/start```
 
 
@@ -32,16 +32,16 @@
 1. You must have telegram
 2. Go to <a href="https://t.me/BotFather">@BotFather</a>
 3. Send ```/newbot```
-4. Then, send name you woud like to choose(Ex.: ```AstroHelper```)
+4. Then, send name You woud like to choose(Ex.: ```AstroHelper```)
 5. Send send *username*(Ex.: ```astrohelper_bot```)
-6. All right, you just created your own bot!
+6. All right, You just created Your own bot!
 
 # How to get my id <img align="center"  width="35px" src="Design/myid.jpg" /> 
 
 1. You must have telegram
 2. Go to <a href="https://t.me/myidbot">@IDBot</a>
 3. Send ```/getid```
-4. Copy your id!
+4. Copy Your id!
 
 ##  Plans for future📜
 <ul>
