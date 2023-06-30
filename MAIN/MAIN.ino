@@ -5,10 +5,10 @@
 #define LED_COUNT 113          // number of LEDs in the ring/strip
 #define LED_DT 2U             // pin to which the DIN of the strip is connected
 
-#define WIFI_SSID "login"
-#define WIFI_PASS "pass"
-#define BOT_TOKEN "aaaaaaaaaa:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-String MyId = "xxxxxxxxxx";
+#define WIFI_SSID "login" //Enter your WiFi login
+#define WIFI_PASS "pass" //Enter your WiFi password
+#define BOT_TOKEN "aaaaaaaaaa:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" // Enter Bot's Token
+String MyId = "xxxxxxxxxx"; //Enter Your Telegram ID
 
 int max_bright = 255;         // maximum brightness (0 - 255)
 int ledMode = 2;
