@@ -173,7 +173,7 @@ void loop() {
     ESP.restart();
   }
   switch (ledMode) {
-    case 1000: bot.tick(); custom_color(); LEDS.show(); break; 
+    case 1000: bot.tick(); custom_color(); LEDS.show(); delay(100); break; 
     case 999: bot.tick(); break; // pause
     case 2: bot.tick(); rainbow_fade(); break; // smooth colour change of the entire tape
     case 3: bot.tick(); rainbow_loop(); break; // spinning rainbow
