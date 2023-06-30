@@ -1,18 +1,25 @@
 # LEDeffects
 # First steps🐾
-1. Assemble according to the above scheme
-  <img align="center"  width="800px" src="Design/sheme.png" />
+• Assemble according to the above scheme
+<img align="center"  width="800px" src="Design/sheme.png" />
+
+•  <a href="https://github.com/astrosander/LEDeffects/archive/refs/heads/main.zip">Download</a> repository
+•  Unarchive
+•  Open <a href="https://github.com/astrosander/LEDeffects/blob/main/MAIN/MAIN.ino">./Main/MAIN.ino</a>
+• Edit ```8-11``` lines:
+
+```8```- Enter your WiFi login
+
+```9``` - Enter your WiFi password
+
+```10``` - Enter Bot's Token, which you got with 
+<a href="https://github.com/astrosander/LEDeffects/edit/main/README.md#how-to-make-telegram-bot">@BotFather</a>
+
+```11``` - Enter Telegram ID, which you got with <a href="https://github.com/astrosander/LEDeffects/edit/main/README.md#how-to-get-my-id">@IDBot</a>
+
   
-2.  <a href="https://github.com/astrosander/LEDeffects/archive/refs/heads/main.zip">Download</a> repository
-3.  Unarchive
-4.  Open <a href="https://github.com/astrosander/LEDeffects/blob/main/MAIN/MAIN.ino">./Main/MAIN.ino</a>
-5. Edit ```8-11``` lines:
-  •8 - Enter your WiFi login
-  •9 - Enter your WiFi password
-  •10 - Enter Bot's Token, which you got with <a href="https://github.com/astrosander/LEDeffects/edit/main/README.md#how-to-make-telegram-bot">@BotFather</a>
-  •11 - Enter Telegram ID, which you got with <a href="https://github.com/astrosander/LEDeffects/edit/main/README.md#how-to-get-my-id">@IDBot</a>
-6. Upload code to your board
-7. Go to your bot and send ```/start```
+• Upload code to your board
+• Go to your bot and send ```/start```
 
 
 # How to make telegram-bot <img align="center"  width="40px" src="Design/bot_father.png" /> 
