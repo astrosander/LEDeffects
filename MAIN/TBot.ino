@@ -96,7 +96,7 @@ std::vector<String> getWordsFromString(String inputString) {
 }
 
 
-void connectWiFi() {
+void connectWiFi(int ledMode) {
   delay(2000);
   Serial.println();
 
@@ -119,7 +119,7 @@ void connectWiFi() {
   Serial.println("Connected");
 
   digitalWrite(LED_BUILTIN, HIGH);
-  change_mode(2);
+  change_mode(ledMode);
 
   bot.sendMessage("⚡ " + String(WiFi.hostname().c_str()) + " is connected", MyId);
 }
@@ -153,7 +153,7 @@ void newMsg(FB_msg& msg) {
   {
     f = 0;
     change_mode(2);
-    bot.sendMessage("Successfully✅", msg.chatID);
+    bot.sendMessage("Successfully✅", msg.chatID);  
     return;
   }
 
@@ -293,6 +293,16 @@ void newMsg(FB_msg& msg) {
     bot.sendMessage(s, words[1]);
     bot.sendMessage("Successfully✅", msg.chatID);
     return;
+  }
+  
+  if(msg.text == "/germany")
+  {
+    change_mode(1000); 
+    for (int i = 0; i < CurCol.size() / 3; i++) {CurCol[i].r = 0;CurCol[i].g = 0;CurCol[i].b = 0;}
+    for (int i = CurCol.size() / 3; i < CurCol.size() / 3 * 2; i++) {CurCol[i].r = 255;CurCol[i].g = 0;CurCol[i].b = 0;}
+    for (int i = CurCol.size() / 3 * 2; i < CurCol.size(); i++) {CurCol[i].r = 225;CurCol[i].g = 255;CurCol[i].b = 0;}
+    LEDS.show(); 
+    bot.sendMessage("🇩🇪 Successfully✅", msg.chatID);
   }
 
   if (msg.text == "/start" or msg.text == "/help") bot.sendMessage(help, msg.chatID);
