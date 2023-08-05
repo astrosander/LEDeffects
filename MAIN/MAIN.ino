@@ -22,7 +22,6 @@ byte ballColors[3][3] = {
   {0   , 0   , 0xff},
 };
 
-
 FastBot bot(BOT_TOKEN);
 
 // ---------------UTILITY VARIABLES-----------------
@@ -87,11 +86,13 @@ void custom_color() {
     leds[i].setRGB(CurCol[i].r, CurCol[i].g, CurCol[i].b);
 }
 
-void change_mode(int newmode) {
+int past = 1000;
+void change_mode(int newmode, bool perm) {
   thissat = 255;
+  bool er = 0;
   switch (newmode) {
-    case 0: one_color_all(0, 0, 0); LEDS.show(); break; //---ALL OFF
-    case 1: one_color_all(255, 255, 255); LEDS.show(); break; //---ALL ON
+    case 0: one_color_all(255, 255, 255); LEDS.show(); break; //---ALL OFF
+    case 1: one_color_all(0, 0, 0); LEDS.show(); break; //---ALL ON
     case 2: thisdelay = 20; break;                      //---STRIP RAINBOW FADE
     case 3: thisdelay = 20; thisstep = 10; break;       //---RAINBOW LOOP
     case 4: thisdelay = 20; break;                      //---RANDOM BURST
@@ -142,16 +143,16 @@ void change_mode(int newmode) {
     case 105: one_color_all(0, 255, 255); LEDS.show(); break; //---ALL COLOR Y
     case 106: one_color_all(255, 0, 255); LEDS.show(); break; //---ALL COLOR Z
     case 1000: custom_color(); LEDS.show(); break;
-    default: return;
+    default: er = true; break;
   }
-  
   bouncedirection = 0;
   one_color_all(0, 0, 0);
   ledMode = newmode;
-
-  if(newmode > 255) newmode = 2;
+  if(!perm or er or newmode < 2) return;
   
-  EEPROM.put(0, newmode);
+  EEPROM.put(0, ledMode);
+  if(ledMode == 1000) EEPROM.put(4, CurCol[0]);
+  
   EEPROM.commit();
 }
 
@@ -163,20 +164,17 @@ bool dir = true;
 
 void setup()
 {
-  EEPROM.begin(10);
   Serial.begin(9600); // open port for communication
   pinMode(LED_BUILTIN, OUTPUT);
 
-  ledMode = EEPROM.get(0, ledMode);
-  Serial.println(ledMode);
-  Serial.println(ledMode);
-  
+  EEPROM.begin(LED_COUNT*3 + 15);
+
   LEDS.setBrightness(max_bright); // limit maximum brightness
   LEDS.addLeds<WS2811, LED_DT, GRB>(leds, LED_COUNT); // settings for our ribbon (ribbon on WS2811, WS2812, WS2812B)
   one_color_all(0, 0, 0); // extinguish all LEDs
   LEDS.show(); // send command  
 
-  connectWiFi(ledMode);
+  connectWiFi();
   bot.attach(newMsg);
   
 }

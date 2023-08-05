@@ -2,7 +2,8 @@ String help = "🔸/all to change every pixel's colour\n"
               "🔸/mode to set mode\n"
               "🔸/help to get commands\n"
               "🔸/restart to restart ESP\n"
-              "🔸/bright to set brightness\n\n"
+              "🔸/bright to set brightness\n"
+              "🔸/get_mode to get mode\n\n"
               "🎨Colours at the maximum brightness\n"
               "⚫/black\n"
               "⚪️/white\n"
@@ -96,7 +97,7 @@ std::vector<String> getWordsFromString(String inputString) {
 }
 
 
-void connectWiFi(int ledMode) {
+void connectWiFi() {
   delay(2000);
   Serial.println();
 
@@ -109,7 +110,7 @@ void connectWiFi(int ledMode) {
     if (millis() > 15000) ESP.restart();
   }
 
-  change_mode(1);
+  change_mode(1, 0);
 
   digitalWrite(LED_BUILTIN, LOW);
 
@@ -119,7 +120,8 @@ void connectWiFi(int ledMode) {
   Serial.println("Connected");
 
   digitalWrite(LED_BUILTIN, HIGH);
-  change_mode(ledMode);
+
+  FirstLaunch();
 
   bot.sendMessage("⚡ " + String(WiFi.hostname().c_str()) + " is connected", MyId);
 }
@@ -142,7 +144,7 @@ void newMsg(FB_msg& msg) {
   {
     f = 1;
 
-    change_mode(1000); cone_color_all(0, 0, 0); LEDS.show(); 
+    change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); 
 
     bot.sendMessage("Successfully✅", msg.chatID);
     bot.sendMessage("Send me color which u would like to set\nFormat: '/pxl #4a7044 pos' or '/pxl 74 112 68 pos'\n❗Type /stop_drawing to stop drawing", msg.chatID);
@@ -152,8 +154,8 @@ void newMsg(FB_msg& msg) {
   if (msg.text == "/stop_drawing")
   {
     f = 0;
-    change_mode(2);
-    bot.sendMessage("Successfully✅", msg.chatID);  
+    change_mode(2, 0);
+    bot.sendMessage("Successfully✅", msg.chatID);
     return;
   }
 
@@ -220,18 +222,18 @@ void newMsg(FB_msg& msg) {
   int val = ledMode;  
 
   digitalWrite(LED_BUILTIN, LOW);
-  change_mode(1);
+  change_mode(1, 0);
 
-  for(int i = 0; i <= 255; i+=5) {one_color_all(i, 0, 0); LEDS.show();}
-  for(int i = 255; i >= 0; i-=5) {one_color_all(i, 0, 0); LEDS.show();}
+  for(int i = 0; i <= 255; i+=5) {one_color_all(i, 0, 0); LEDS.show();delay(5);}
+  for(int i = 255; i >= 0; i-=5) {one_color_all(i, 0, 0); LEDS.show();delay(5);}
 
-  change_mode(val);
+  change_mode(val, 0);
   digitalWrite(LED_BUILTIN, HIGH);
 
   if (words[0] == "/all") {
     if(words.size() != 2 and words.size() != 4) bot.sendMessage("❗Send me color which u would like to set\nFormat: '/all #4a7044' or '/all 74 112 68'", msg.chatID);
 
-    change_mode(1000);
+    
     if(words[1][0] == '#')
     {
         String hexColor = words[1]; 
@@ -259,7 +261,7 @@ void newMsg(FB_msg& msg) {
         cone_color_all(words[1].toInt(), words[2].toInt(), words[3].toInt());
       }
     } 
-    
+    change_mode(1000, 1);
     bot.sendMessage("Successfully✅", msg.chatID);
 
     return;
@@ -272,7 +274,7 @@ void newMsg(FB_msg& msg) {
     {
       if(words.size() != 2) bot.sendMessage(Commands, msg.chatID);
       else{
-        change_mode(secondWord);
+        change_mode(secondWord, 1);
         bot.sendMessage("Successfully✅", msg.chatID);
       }
     }
@@ -294,23 +296,26 @@ void newMsg(FB_msg& msg) {
     bot.sendMessage("Successfully✅", msg.chatID);
     return;
   }
-  
-  if(msg.text == "/germany")
-  {
-    change_mode(1000); 
-    for (int i = 0; i < CurCol.size() / 3; i++) {CurCol[i].r = 0;CurCol[i].g = 0;CurCol[i].b = 0;}
-    for (int i = CurCol.size() / 3; i < CurCol.size() / 3 * 2; i++) {CurCol[i].r = 255;CurCol[i].g = 0;CurCol[i].b = 0;}
-    for (int i = CurCol.size() / 3 * 2; i < CurCol.size(); i++) {CurCol[i].r = 225;CurCol[i].g = 255;CurCol[i].b = 0;}
-    LEDS.show(); 
-    bot.sendMessage("🇩🇪 Successfully✅", msg.chatID);
-  }
 
+  if (msg.text == "/get"){bot.sendMessage(String(EEPROM.read(0)), msg.chatID);return;}
+  
   if (msg.text == "/start" or msg.text == "/help") bot.sendMessage(help, msg.chatID);
-  else if(msg.text == "/black" or msg.text == "/off" or msg.text == "/clear") {change_mode(1000); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("⚫Successfully✅", msg.chatID);}
-  else if(msg.text == "/white") {change_mode(1000); cone_color_all(255, 255, 255); LEDS.show(); bot.sendMessage("⚪️Successfully✅", msg.chatID);}
-  else if(msg.text == "/green") {change_mode(1000); cone_color_all(0, 255, 0); LEDS.show(); bot.sendMessage("🟢Successfully✅", msg.chatID);}
-  else if(msg.text == "/red") {change_mode(1000); cone_color_all(255, 0, 0); LEDS.show(); bot.sendMessage("🔴Successfully✅", msg.chatID);}
-  else if(msg.text == "/blue") {change_mode(1000); cone_color_all(0, 0, 255); LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
+  else if(msg.text == "/get_mode") {
+    String ans = "The mode is " + String(val) + "\n";
+    ans += "The number of leds: " + String(LED_COUNT) + "\n\n";
+    ans += "Value of each pixel:\n{0; " + String(CurCol[0].r) + "; " + String(CurCol[0].g) + "; " + String(CurCol[0].b) + "}";
+    for (int i = 1; i < CurCol.size(); i++) ans += ",\n{" + String(i) + "; " + String(CurCol[i].r) + "; " + String(CurCol[i].g) + "; " + String(CurCol[i].b) + "}";
+  
+    bot.sendMessage( ans , msg.chatID);
+    
+  }
+  else if(msg.text == "/black") {change_mode(1000, 1); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("⚫Successfully✅", msg.chatID);}
+  else if(msg.text == "/off") {change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("📴Successfully✅", msg.chatID);}
+  else if(msg.text == "/white") { cone_color_all(255, 255, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("⚪️Successfully✅", msg.chatID);}
+  else if(msg.text == "/green") { cone_color_all(0, 255, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟢Successfully✅", msg.chatID);}
+  else if(msg.text == "/red") { cone_color_all(255, 0, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔴Successfully✅", msg.chatID);}
+  else if(msg.text == "/blue") { cone_color_all(0, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
+  else if(msg.text == "/on") { FirstLaunch(); bot.sendMessage("🔛Successfully✅", msg.chatID);}
   
   else bot.sendMessage("Invaid command❌\n Use /help to list available commands", msg.chatID);
 }

@@ -19,6 +19,25 @@ int horizontal_index(int i) {
   }
   return LED_COUNT - i;
 }
+void FirstLaunch(){
+  int mod = 0; 
+  EEPROM.get(0, mod);
+  Serial.println(mod);
+  if(mod == 255) change_mode(3, 0);
+  else {
+    Color testS;
+    if(mod == 1000) 
+    {
+        EEPROM.get(4, testS);
+        cone_color_all(testS.r, testS.g, testS.b);
+        
+        Serial.println(testS.r);
+        Serial.println(testS.g);
+        Serial.println(testS.b);
+    }
+    change_mode(mod, 0);
+  }
+}
 
 //---FIND INDEX OF ANTIPODAL OPPOSITE LED
 int antipodal_index(int i) {
