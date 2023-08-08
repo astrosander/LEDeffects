@@ -4,12 +4,14 @@ String help = "🔸/all to change every pixel's colour\n"
               "🔸/restart to restart ESP\n"
               "🔸/bright to set brightness\n"
               "🔸/get_mode to get mode\n\n"
-              "🎨Colours at the maximum brightness\n"
+              "🎨Custom colours\n"
               "⚫/black\n"
               "⚪️/white\n"
               "🔴/red\n"
               "🟢/green\n"
               "🔵/blue\n"
+              "🟠/orange\n"
+              "🟣/lavender\n"
               "🖌️/start_drawing drawing pixel-to-pixel\n";
 
 
@@ -161,8 +163,9 @@ void newMsg(FB_msg& msg) {
 
   if (words[0] == "/pxl") {
     if (!f) {
-      bot.sendMessage("❗Send /start_drawing to start drawing", msg.chatID);
-      return;
+          f = 1;
+          change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); 
+          bot.sendMessage("🖌Drawing mode is enable", msg.chatID);
     }
 
     if(words.size() != 3 and words.size() != 5) {bot.sendMessage("❗Send me color and position which u would like to set\nFormat: '/pxl #4a7044 pos' or '/pxl 74 112 68 pos'", msg.chatID);return;}
@@ -315,6 +318,8 @@ void newMsg(FB_msg& msg) {
   else if(msg.text == "/green") { cone_color_all(0, 255, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟢Successfully✅", msg.chatID);}
   else if(msg.text == "/red") { cone_color_all(255, 0, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔴Successfully✅", msg.chatID);}
   else if(msg.text == "/blue") { cone_color_all(0, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
+  else if(msg.text == "/lavender") { cone_color_all(197, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
+  else if(msg.text == "/orange") { cone_color_all(255, 70, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
   else if(msg.text == "/on") { FirstLaunch(); bot.sendMessage("🔛Successfully✅", msg.chatID);}
   
   else bot.sendMessage("Invaid command❌\n Use /help to list available commands", msg.chatID);
