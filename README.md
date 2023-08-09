@@ -1,4 +1,6 @@
 # LEDeffects
+<img src="Design/Presentation.gif" width="400"/>
+
 # First steps🐾
 <h4>• Assemble according to the above scheme</h4>
 <img align="center"  width="800px" src="Design/sheme.png" />
