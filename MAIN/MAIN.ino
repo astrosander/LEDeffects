@@ -74,11 +74,7 @@ void one_color_all(int cred, int cgrn, int cblu) {       //-SET ALL LEDS TO ONE 
 }
 
 void cone_color_all(int cred, int cgrn, int cblu) {
-  for (int i = 0; i < CurCol.size(); i++) {
-    CurCol[i].r = cred;
-    CurCol[i].g = cgrn;
-    CurCol[i].b = cblu;
-  }
+  for (int i = 0; i < CurCol.size(); i++) CurCol[i]={cred, cgrn, cblu}; 
 }
 
 void custom_color() {
@@ -185,7 +181,7 @@ void loop() {
     ESP.restart();
   }
   switch (ledMode) {
-    case 1000: bot.tick(); custom_color(); LEDS.show(); delay(100); break; 
+    case 1000: bot.tick(); custom_color(); LEDS.show(); delay(1000); break; 
     case 999: bot.tick(); break; // pause
     case 2: bot.tick(); rainbow_fade(); break; // smooth colour change of the entire tape
     case 3: bot.tick(); rainbow_loop(); break; // spinning rainbow

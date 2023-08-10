@@ -172,13 +172,15 @@ void newMsg(FB_msg& msg) {
     
     if(words[1][0] == '#')
     {
-        int pos = words[2].toInt();
-        if(pos < 0 or pos >= LED_COUNT) 
+        int pos1 = words[2].toInt();
+        int pos2 = pos1;
+        
+        if(pos1 < 0 or pos1 >= LED_COUNT) 
         {
           bot.sendMessage("❗Pls enter all INTEGERS in the range [0; "+ String(LED_COUNT - 1) +"]", msg.chatID);       
           return;  
         }
-
+  
         String hexColor = words[1]; 
         hexColor.replace("#", "");
         
@@ -186,18 +188,31 @@ void newMsg(FB_msg& msg) {
         String greenHex = hexColor.substring(2, 4);
         String blueHex = hexColor.substring(4, 6);
 
-        CurCol[pos].r = strtol(redHex.c_str(), NULL, 16);
-        CurCol[pos].g = strtol(greenHex.c_str(), NULL, 16);
-        CurCol[pos].b = strtol(blueHex.c_str(), NULL, 16);
+        int dashIndex = words[2].indexOf('-');
+        if (dashIndex != -1) pos2 = words[2].substring(dashIndex + 1).toInt();
+        
+        for(int i = pos1; i <= pos2; i++){
+          CurCol[i]={
+            strtol(redHex.c_str(), NULL, 16),
+            strtol(greenHex.c_str(), NULL, 16),
+            strtol(blueHex.c_str(), NULL, 16)
+          }; 
+        }
     }
-    else 
-    {
-      int pos = words[4].toInt();
-      if(pos < 0 or pos >= LED_COUNT) 
+    else {
+      int pos1 = words[4].toInt();
+      int pos2 = pos1;
+      
+      if(pos1 < 0 or pos1 >= LED_COUNT) 
       {
         bot.sendMessage("❗Pls enter all INTEGERS in the range [0; "+ String(LED_COUNT - 1) +"]", msg.chatID);       
         return;  
       }
+      
+      int dashIndex = words[4].indexOf('-');
+      if (dashIndex != -1) pos2 = words[4].substring(dashIndex + 1).toInt();
+        
+
       
       for(int i = 1; i < 4; i++){
         int val = words[i].toInt();
@@ -207,10 +222,14 @@ void newMsg(FB_msg& msg) {
           bot.sendMessage("❗Pls enter all INTEGERS in the range [0; 255]", msg.chatID);       
           return;  
         }
-        
-        CurCol[pos].r = words[1].toInt();
-        CurCol[pos].g = words[2].toInt();
-        CurCol[pos].b = words[3].toInt();
+
+        for(int i = pos1; i <= pos2; i++){
+          CurCol[i]={
+            words[1].toInt(),
+            words[2].toInt(),
+            words[3].toInt()
+          }; 
+        }
       }
     } 
     
@@ -230,7 +249,6 @@ void newMsg(FB_msg& msg) {
   for(int i = 0; i <= 255; i+=5) {one_color_all(i, 0, 0); LEDS.show();delay(5);}
   for(int i = 255; i >= 0; i-=5) {one_color_all(i, 0, 0); LEDS.show();delay(5);}
 
-  change_mode(val, 0);
   digitalWrite(LED_BUILTIN, HIGH);
 
   if (words[0] == "/all") {
@@ -279,9 +297,11 @@ void newMsg(FB_msg& msg) {
       else{
         change_mode(secondWord, 1);
         bot.sendMessage("Successfully✅", msg.chatID);
+        return;
       }
     }
     else{
+      change_mode(val, 0);
       if(words.size() == 2 and secondWord >= 0 and secondWord <= 255){
         LEDS.setBrightness(secondWord);
         bot.sendMessage("Successfully✅", msg.chatID);
@@ -290,37 +310,38 @@ void newMsg(FB_msg& msg) {
     }
     return;
   }
-  
-  if(words[0] == "/send")
-  {
-    String s = "";
-    for(int i = 2; i < words.size(); i++) s = s + words[i] + " ";
-    bot.sendMessage(s, words[1]);
-    bot.sendMessage("Successfully✅", msg.chatID);
-    return;
-  }
 
-  if (msg.text == "/get"){bot.sendMessage(String(EEPROM.read(0)), msg.chatID);return;}
-  
-  if (msg.text == "/start" or msg.text == "/help") bot.sendMessage(help, msg.chatID);
-  else if(msg.text == "/get_mode") {
-    String ans = "The mode is " + String(val) + "\n";
-    ans += "The number of leds: " + String(LED_COUNT) + "\n\n";
-    ans += "Value of each pixel:\n{0; " + String(CurCol[0].r) + "; " + String(CurCol[0].g) + "; " + String(CurCol[0].b) + "}";
-    for (int i = 1; i < CurCol.size(); i++) ans += ",\n{" + String(i) + "; " + String(CurCol[i].r) + "; " + String(CurCol[i].g) + "; " + String(CurCol[i].b) + "}";
-  
-    bot.sendMessage( ans , msg.chatID);
-    
-  }
-  else if(msg.text == "/black") {change_mode(1000, 1); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("⚫Successfully✅", msg.chatID);}
-  else if(msg.text == "/off") {change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("📴Successfully✅", msg.chatID);}
-  else if(msg.text == "/white") { cone_color_all(255, 255, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("⚪️Successfully✅", msg.chatID);}
-  else if(msg.text == "/green") { cone_color_all(0, 255, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟢Successfully✅", msg.chatID);}
-  else if(msg.text == "/red") { cone_color_all(255, 0, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔴Successfully✅", msg.chatID);}
-  else if(msg.text == "/blue") { cone_color_all(0, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
-  else if(msg.text == "/lavender") { cone_color_all(197, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
-  else if(msg.text == "/orange") { cone_color_all(255, 70, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔵Successfully✅", msg.chatID);}
+  if(msg.text == "/black") {change_mode(1000, 1); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("⚫Successfully", msg.chatID);}
+  else if(msg.text == "/off") {change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("📴Successfully", msg.chatID);}
+  else if(msg.text == "/white") { cone_color_all(255, 255, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("⚪️Successfully", msg.chatID);}
+  else if(msg.text == "/green") { cone_color_all(0, 255, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟢Successfully", msg.chatID);}
+  else if(msg.text == "/red") { cone_color_all(255, 0, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔴Successfully", msg.chatID);}
+  else if(msg.text == "/blue") { cone_color_all(0, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔵Successfully", msg.chatID);}
+  else if(msg.text == "/lavender") { cone_color_all(197, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟣Successfully", msg.chatID);}
+  else if(msg.text == "/orange") { cone_color_all(255, 70, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟠Successfully", msg.chatID);}
   else if(msg.text == "/on") { FirstLaunch(); bot.sendMessage("🔛Successfully✅", msg.chatID);}
+  else{
+    change_mode(val, 0);
+    
+    if(words[0] == "/send")
+    {
+      String s = "";
+      for(int i = 2; i < words.size(); i++) s = s + words[i] + " ";
+      bot.sendMessage(s, words[1]);
+      bot.sendMessage("Successfully✅", msg.chatID);
+      return;
+    }
   
-  else bot.sendMessage("Invaid command❌\n Use /help to list available commands", msg.chatID);
+    if (msg.text == "/start" or msg.text == "/help") bot.sendMessage(help, msg.chatID);
+    else if(msg.text == "/get_mode") {
+      String ans = "The mode is " + String(val) + "\n";
+      ans += "The number of leds: " + String(LED_COUNT) + "\n\n";
+      ans += "Value of each pixel:\n{0; " + String(CurCol[0].r) + "; " + String(CurCol[0].g) + "; " + String(CurCol[0].b) + "}";
+      for (int i = 1; i < CurCol.size(); i++) ans += ",\n{" + String(i) + "; " + String(CurCol[i].r) + "; " + String(CurCol[i].g) + "; " + String(CurCol[i].b) + "}";
+    
+      bot.sendMessage( ans , msg.chatID);    
+    }
+  
+    else bot.sendMessage("Invaid command❌\n Use /help to list available commands", msg.chatID);
+  }
 }
