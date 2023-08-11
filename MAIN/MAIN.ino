@@ -15,6 +15,8 @@ int max_bright = 255;         // maximum brightness (0 - 255)
 int ledMode = 2;
 bool f = 0;
 bool rst = 0;
+int StartOff = 0;
+int RangeOff = 0;
 
 byte ballColors[3][3] = {
   {0xff, 0, 0},
@@ -176,6 +178,8 @@ void setup()
 }
 
 void loop() {
+  if(StartOff && (StartOff + RangeOff < millis())){StartOff = 0;change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show();}
+  
   if (rst) {
     bot.tickManual();
     ESP.restart();

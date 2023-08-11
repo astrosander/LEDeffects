@@ -67,6 +67,21 @@ String Commands = "Enter /mode a where a is number of mode\n📜List of modes:\n
                   "999 pause. ⏸️";
 
 
+Color Saturation(Color CurColor, int level){
+//  byte red = CurColor.r;
+//  byte green = CurColor.g;
+//  byte blue = CurColor.b;
+//  
+//  byte highest = max(max(red, green), blue);
+//  byte lowest = min(min(red, green), blue);
+//  
+//  
+//  byte grayVal = (highest + lowest)/2;
+  Serial.println(leds[0]);
+//  Serial.println(String(lowest));
+//  Serial.println(String(grayVal));
+    return CurColor;
+}
 
 String removeSpaces(String inputString) {
   String outputString = "";
@@ -75,7 +90,6 @@ String removeSpaces(String inputString) {
   }
   return outputString;
 }
-
 
 std::vector<String> getWordsFromString(String inputString) {
   std::vector<String> words;  // Vector to store the words
@@ -250,7 +264,28 @@ void newMsg(FB_msg& msg) {
   for(int i = 255; i >= 0; i-=5) {one_color_all(i, 0, 0); LEDS.show();delay(5);}
 
   digitalWrite(LED_BUILTIN, HIGH);
+  
+  if(words[0][0] == '#')
+  {
+      String hexColor = words[0]; 
+      hexColor.replace("#", "");
+      
+      String redHex = hexColor.substring(0, 2);
+      String greenHex = hexColor.substring(2, 4);
+      String blueHex = hexColor.substring(4, 6);
 
+      int red = strtol(redHex.c_str(), NULL, 16);
+      int green = strtol(greenHex.c_str(), NULL, 16);
+      int blue = strtol(blueHex.c_str(), NULL, 16);
+
+      cone_color_all(red, green, blue);
+      change_mode(1000, 1);
+    bot.sendMessage("Successfully✅", msg.chatID);
+
+    return;
+  }
+
+  
   if (words[0] == "/all") {
     if(words.size() != 2 and words.size() != 4) bot.sendMessage("❗Send me color which u would like to set\nFormat: '/all #4a7044' or '/all 74 112 68'", msg.chatID);
 
@@ -311,8 +346,38 @@ void newMsg(FB_msg& msg) {
     return;
   }
 
+//  if (words[0] == "/saturation"){
+//      int val = words[1].toInt();
+//      
+//      if(val < -100 or val > 100) 
+//      {
+//        bot.sendMessage("❗Pls enter PERSENTAGE in the range [-100; 100]", msg.chatID);     
+//        return;  
+//      }
+//      for (int i = 0; i < CurCol.size(); i++) CurCol[i] = Saturation(CurCol[i], val); 
+//      
+//      bot.sendMessage("Successfully✅", msg.chatID);
+//      return;
+//  }
+
+  if(words[0] == "/off"){
+    if(msg.text == "/off") {change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("📴Successfully", msg.chatID);}
+    else{
+      int val = words[1].toInt() * 1000;
+      if(val < 0 or val > 2592000) 
+      {
+        bot.sendMessage("❗Pls enter sth INTEGER in the range [0; 2592000]", msg.chatID);     
+        return;  
+      }
+      StartOff = millis();
+      RangeOff = val;
+      bot.sendMessage("⏱️Timer is setted", msg.chatID);
+    }
+    return;
+  }
+  
+
   if(msg.text == "/black") {change_mode(1000, 1); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("⚫Successfully", msg.chatID);}
-  else if(msg.text == "/off") {change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("📴Successfully", msg.chatID);}
   else if(msg.text == "/white") { cone_color_all(255, 255, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("⚪️Successfully", msg.chatID);}
   else if(msg.text == "/green") { cone_color_all(0, 255, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟢Successfully", msg.chatID);}
   else if(msg.text == "/red") { cone_color_all(255, 0, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔴Successfully", msg.chatID);}
