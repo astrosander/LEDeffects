@@ -1,6 +1,59 @@
 # LEDeffects
 <img src="Design/Presentation.gif" width="400"/>
 
+
+
+<pre>📜List of modes:
+2 smooth change of colours for the entire ribbon. 🌈
+3 a spinning rainbow. 🌪️🌈
+4 random colour change. 🎨
+5 running LED 🏃‍♂️💡
+6 a running train of LEDs. 🚂💡
+7 red and blue rotating. 🔴🔵🔄
+8 rotating half red and half blue 🔴🔵🔄
+9 random strobe light. ⚡🌈
+10 single colour pulsation 💥🌈
+11 colour changing pulsation 🌈💥🌈
+12 smooth vertical brightness change (for ring) 🔆🔼🔽
+13 red LED madness. 🔴💡💥
+14 random colour madness. 🎨💥
+15 white blue red running in a circle 🏃‍♂️🔵⚪🔴🔄
+16 radiation icon pulsating ☢️💥🌈
+17 red LED running in a circle 🏃‍♂️🔴🔄
+18 white and blue gradient. ⚪🔵🌈
+19 same thing's going on. ⏭️🔄
+20 red flashes going down 🔴⬇️💥
+21 crescent moon. 🌙
+22 flame effect. 🔥🔥🔥
+23 rainbow in the vertical plane. 🌈🔼🔽
+24 Pac-Man. 🎮😄
+25 random flash madness. 💥💥💥
+26 police flasher. 🚨🔵🔴
+27 RGB propeller. 🔄🔴🔵⚪
+28 random red flashes in the vertical plane. 🔴💥🔼🔽
+29 greens running around randomly. 🟢🏃‍♂️🔄
+30 greens running around randomly. 🟢🏃‍♂️🔄
+31 something's broken ❌🔧
+32 something's broken. ❌🔧
+33 smooth colour fills 🎨🔆
+34 running LEDs. 🏃‍♂️💡
+35 line lights. 🚦💡
+36 running circle sectors (doesn't work) 🔴🟢🔵🔄
+37 very smooth rotating rainbows. 🌈🔄🌈
+38 random multi-coloured lights (1 - all dancing, 0 - random 1 diode) 🎨💃🔴🔵🟢🌈
+39 running lights. 🏃‍♂️💡
+40 random flashes of white 💥⚪
+41 random flashes of white on a white background 💥⚪🔳
+42 running every 3 times. 🏃‍♂️🔄⏰
+43 running every 3 rainbows. 🏃‍♂️🔄🌈⏰
+44 strobe lights. ⚡💡💥
+45 bouncing balls. 🏀⬆️⬇️
+46 colored bouncing balls. 🎨🏀⬆️⬇️
+888 long demo. 🎉🎮
+889 short demo. 🎉🎮
+999 pause. ⏸️
+</pre>
+
 # First steps🐾
 <h4>• Assemble according to the above scheme</h4>
 <img align="center"  width="800px" src="Design/sheme.png" />
