@@ -2,6 +2,7 @@
 #include <FastBot.h>
 #include <vector> 
 #include <EEPROM.h>
+#include <EncButton.h>
 
 #define LED_COUNT 113          // number of LEDs in the ring/strip
 #define LED_DT 2U             // pin to which the DIN of the strip is connected
@@ -15,6 +16,7 @@ int max_bright = 255;         // maximum brightness (0 - 255)
 int ledMode = 2;
 bool f = 0;
 bool rst = 0;
+bool IsOff = false;
 int StartOff = 0;
 int RangeOff = 0;
 
@@ -25,6 +27,7 @@ byte ballColors[3][3] = {
 };
 
 FastBot bot(BOT_TOKEN);
+EncButton<EB_TICK, 0> enc; //Default - ESP's flash button 
 
 // ---------------UTILITY VARIABLES-----------------
 int BOTTOM_INDEX = 0;        // start LED
@@ -178,12 +181,23 @@ void setup()
 }
 
 void loop() {
-  if(StartOff && (StartOff + RangeOff < millis())){StartOff = 0;change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show();}
-  
+  enc.tick();
+  if(StartOff && (StartOff + RangeOff < millis())){IsOff = !IsOff; StartOff = 0;change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show();bot.sendMessage("📴Successfully", MyId);}
+
+  if (enc.press())
+  {
+    IsOff = !IsOff;
+
+    if(IsOff){StartOff = 0;change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show();}
+    else FirstLaunch();
+  }
+
+ 
   if (rst) {
     bot.tickManual();
     ESP.restart();
   }
+
   switch (ledMode) {
     case 1000: bot.tick(); custom_color(); LEDS.show(); delay(1000); break; 
     case 999: bot.tick(); break; // pause

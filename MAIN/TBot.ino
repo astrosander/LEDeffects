@@ -361,7 +361,7 @@ void newMsg(FB_msg& msg) {
 //  }
 
   if(words[0] == "/off"){
-    if(msg.text == "/off") {change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("📴Successfully", msg.chatID);}
+    if(msg.text == "/off") {IsOff = !IsOff; change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("📴Successfully", msg.chatID);}
     else{
       int val = words[1].toInt() * 1000;
       if(val < 0 or val > 2592000) 
@@ -372,6 +372,7 @@ void newMsg(FB_msg& msg) {
       StartOff = millis();
       RangeOff = val;
       bot.sendMessage("⏱️Timer is setted", msg.chatID);
+      bot.sendMessage("ℹ️Send /on to turn on strip", msg.chatID);
     }
     return;
   }
@@ -384,7 +385,7 @@ void newMsg(FB_msg& msg) {
   else if(msg.text == "/blue") { cone_color_all(0, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔵Successfully", msg.chatID);}
   else if(msg.text == "/lavender") { cone_color_all(197, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟣Successfully", msg.chatID);}
   else if(msg.text == "/orange") { cone_color_all(255, 70, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟠Successfully", msg.chatID);}
-  else if(msg.text == "/on") { FirstLaunch(); bot.sendMessage("🔛Successfully✅", msg.chatID);}
+  else if(msg.text == "/on") { IsOff = !IsOff; FirstLaunch(); bot.sendMessage("🔛Successfully✅", msg.chatID);}
   else{
     change_mode(val, 0);
     
