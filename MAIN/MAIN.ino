@@ -1,16 +1,21 @@
+//Bot Settings
+#define WIFI_SSID "login" //Enter your WiFi login
+#define WIFI_PASS "pass" //Enter your WiFi password
+#define BOT_TOKEN "aaaaaaaaaa:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" // Enter Bot's Token
+String MyId = "xxxxxxxxxx"; //Enter Your Telegram ID
+
+#define LED_COUNT 113           // number of LEDs in the ring/strip
+#define LED_DT 2U              // pin to which the DIN of the strip is connected
+
+
 #include "FastLED.h"          // library for working with LED strip
 #include <FastBot.h>
 #include <vector> 
 #include <EEPROM.h>
 #include <EncButton.h>
 
-#define LED_COUNT 113          // number of LEDs in the ring/strip
-#define LED_DT 2U             // pin to which the DIN of the strip is connected
-
-#define WIFI_SSID "login" //Enter your WiFi login
-#define WIFI_PASS "pass" //Enter your WiFi password
-#define BOT_TOKEN "aaaaaaaaaa:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" // Enter Bot's Token
-String MyId = "xxxxxxxxxx"; //Enter Your Telegram ID
+FastBot bot(BOT_TOKEN);
+EncButton<EB_TICK, 0> enc; //Default - ESP's flash button 
 
 int max_bright = 255;         // maximum brightness (0 - 255)
 int ledMode = 2;
@@ -26,8 +31,6 @@ byte ballColors[3][3] = {
   {0   , 0   , 0xff},
 };
 
-FastBot bot(BOT_TOKEN);
-EncButton<EB_TICK, 0> enc; //Default - ESP's flash button 
 
 // ---------------UTILITY VARIABLES-----------------
 int BOTTOM_INDEX = 0;        // start LED
@@ -54,7 +57,6 @@ int bouncedirection = 0;     //-SWITCH FOR COLOR BOUNCE (0-1)
 float tcount = 0.0;          //-INC VAR FOR SIN LOOPS
 int lcount = 0;              //-ANOTHER COUNTING VAR
 // ---------------UTILITY VARIABLES-----------------
-
 
 struct Color {
   byte r;
@@ -167,7 +169,8 @@ void setup()
 {
   Serial.begin(9600); // open port for communication
   pinMode(LED_BUILTIN, OUTPUT);
-
+  enc.setStepTimeout(500);
+  
   EEPROM.begin(LED_COUNT*3 + 15);
 
   LEDS.setBrightness(max_bright); // limit maximum brightness
@@ -180,26 +183,25 @@ void setup()
   
 }
 
+long last = 0;
+
 void loop() {
-  enc.tick();
+  ButtonTick();
   if(StartOff && (StartOff + RangeOff < millis())){IsOff = !IsOff; StartOff = 0;change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show();bot.sendMessage("📴Successfully", MyId);}
 
-  if (enc.press())
-  {
-    IsOff = !IsOff;
-
-    if(IsOff){StartOff = 0;change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show();}
-    else FirstLaunch();
-  }
-
- 
   if (rst) {
     bot.tickManual();
     ESP.restart();
   }
 
   switch (ledMode) {
-    case 1000: bot.tick(); custom_color(); LEDS.show(); delay(1000); break; 
+    case 1000: 
+      bot.tick(); 
+      if(millis() - last < 1000) return;
+      custom_color(); 
+      LEDS.show(); 
+      last = millis(); 
+      break; 
     case 999: bot.tick(); break; // pause
     case 2: bot.tick(); rainbow_fade(); break; // smooth colour change of the entire tape
     case 3: bot.tick(); rainbow_loop(); break; // spinning rainbow

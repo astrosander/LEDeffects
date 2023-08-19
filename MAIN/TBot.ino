@@ -114,6 +114,8 @@ std::vector<String> getWordsFromString(String inputString) {
 
 
 void connectWiFi() {
+  FirstLaunch();
+  
   delay(2000);
   Serial.println();
 
@@ -126,20 +128,16 @@ void connectWiFi() {
     if (millis() > 15000) ESP.restart();
   }
 
-  change_mode(1, 0);
+//  change_mode(1, 0);
+//
+//  for(int i = 0; i <= 255; i+=5) {one_color_all(0, i, 0); LEDS.show();delay(5);}
+//  for(int i = 255; i >= 0; i-=5) {one_color_all(0, i, 0); LEDS.show();delay(5);}
 
-  digitalWrite(LED_BUILTIN, LOW);
-
-  one_color_all(0, 255, 0);
-  LEDS.show();
-
-  Serial.println("Connected");
-
-  digitalWrite(LED_BUILTIN, HIGH);
-
-  FirstLaunch();
-
+  
   bot.sendMessage("⚡ " + String(WiFi.hostname().c_str()) + " is connected", MyId);
+  
+  FirstLaunch();
+  LEDS.show();
 }
 
 
@@ -255,6 +253,9 @@ void newMsg(FB_msg& msg) {
   
   if(f) {bot.sendMessage("You are currently drawing\n❗Send /stop_drawing to stop drawing", msg.chatID); return; }
 
+  if(msg.text == "/on") {IsOff = !IsOff; FirstLaunch(); bot.sendMessage("🔛Successfully✅", msg.chatID);return;}
+  if(msg.text == "/off") {IsOff = !IsOff; change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("📴Successfully", msg.chatID);return;}
+  
   int val = ledMode;  
 
   digitalWrite(LED_BUILTIN, LOW);
@@ -345,6 +346,7 @@ void newMsg(FB_msg& msg) {
     }
     return;
   }
+  
 
 //  if (words[0] == "/saturation"){
 //      int val = words[1].toInt();
@@ -361,19 +363,16 @@ void newMsg(FB_msg& msg) {
 //  }
 
   if(words[0] == "/off"){
-    if(msg.text == "/off") {IsOff = !IsOff; change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show(); bot.sendMessage("📴Successfully", msg.chatID);}
-    else{
-      int val = words[1].toInt() * 1000;
-      if(val < 0 or val > 2592000) 
-      {
-        bot.sendMessage("❗Pls enter sth INTEGER in the range [0; 2592000]", msg.chatID);     
-        return;  
-      }
-      StartOff = millis();
-      RangeOff = val;
-      bot.sendMessage("⏱️Timer is setted", msg.chatID);
-      bot.sendMessage("ℹ️Send /on to turn on strip", msg.chatID);
+    int val = words[1].toInt() * 1000;
+    if(val < 0 or val > 2592000) 
+    {
+      bot.sendMessage("❗Pls enter sth INTEGER in the range [0; 2592000]", msg.chatID);     
+      return;  
     }
+    StartOff = millis();
+    RangeOff = val;
+    bot.sendMessage("⏱️Timer is setted", msg.chatID);
+    bot.sendMessage("ℹ️Send /on to turn on strip", msg.chatID);
     return;
   }
   
@@ -385,7 +384,6 @@ void newMsg(FB_msg& msg) {
   else if(msg.text == "/blue") { cone_color_all(0, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🔵Successfully", msg.chatID);}
   else if(msg.text == "/lavender") { cone_color_all(197, 0, 255); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟣Successfully", msg.chatID);}
   else if(msg.text == "/orange") { cone_color_all(255, 70, 0); change_mode(1000, 1);LEDS.show(); bot.sendMessage("🟠Successfully", msg.chatID);}
-  else if(msg.text == "/on") { IsOff = !IsOff; FirstLaunch(); bot.sendMessage("🔛Successfully✅", msg.chatID);}
   else{
     change_mode(val, 0);
     
