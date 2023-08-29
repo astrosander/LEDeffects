@@ -4,8 +4,10 @@
 #define BOT_TOKEN "aaaaaaaaaa:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" // Enter Bot's Token
 String MyId = "xxxxxxxxxx"; //Enter Your Telegram ID
 
-#define LED_COUNT 113           // number of LEDs in the ring/strip
-#define LED_DT 2U              // pin to which the DIN of the strip is connected
+#define LED_COUNT 113           // Number of LEDs in the ring/strip
+#define LED_DT 2U              // Pin to which the DIN of the strip is connected
+#define Num_Modes 47          // Number of effects
+#define ButPin 0             // Pin of the button. Default - ESP's flash button
 
 
 #include "FastLED.h"          // library for working with LED strip
@@ -15,7 +17,7 @@ String MyId = "xxxxxxxxxx"; //Enter Your Telegram ID
 #include <EncButton.h>
 
 FastBot bot(BOT_TOKEN);
-EncButton<EB_TICK, 0> enc; //Default - ESP's flash button 
+EncButton<EB_TICK, 0> enc;  
 
 int max_bright = 255;         // maximum brightness (0 - 255)
 int ledMode = 2;

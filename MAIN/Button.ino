@@ -1,30 +1,26 @@
 void ButtonTick(){
   enc.tick();
 
-//  if (enc.held()) mode = 0;
-    
-  if(!enc.hasClicks()) return;
-  
-  if(enc.clicks == 1){
+  if(enc.held()){
     blink(100);
     IsOff = !IsOff;
 
     if(IsOff){StartOff = 0;change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show();}
     else FirstLaunch();
   }
-
-//  
-//  if(enc.clicks == 2){lcd.clear(); mode = (mode + NumMode - 1) % NumMode;} 
-//  if(enc.clicks == 3) SpeedFormat = !SpeedFormat;
-//  
-//  if(enc.clicks == 4) MaxSpeed=0;
-//  if(enc.clicks >= 10) {BackReset();resetFunc();}
+  
+  if(!enc.hasClicks()) return;
+  
+  if(enc.clicks == 1){
+    byte newMode = (ledMode < 256) ? (ledMode + 1) % Num_Modes : 1;
+    change_mode(newMode, 1);
+  }
+  
+  if(enc.clicks == 2){
+    byte newMode = (ledMode < 256) ? (ledMode - 1 + Num_Modes) % Num_Modes : 1;
+    change_mode(newMode, 1);
+  }
 }
-//
-// if (enc.press())
-//  {
-//    IsOff = !IsOff;
-//
-//    if(IsOff){StartOff = 0;change_mode(1000, 0); cone_color_all(0, 0, 0); LEDS.show();}
-//    else FirstLaunch();
-//  }
+/**ToDo:
+ * Add changing of the brightness
+ */
