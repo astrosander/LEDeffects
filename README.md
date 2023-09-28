@@ -1,7 +1,6 @@
 # LEDeffects
+
 <img src="Design/Presentation.gif" width="400"/>
-
-
 
 <pre>📜Wiki:
 🔸List of modes from /mode:
