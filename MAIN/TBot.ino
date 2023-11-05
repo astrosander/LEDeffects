@@ -143,13 +143,16 @@ void connectWiFi() {
 
 
 void newMsg(FB_msg& msg) {
-
-  String review = msg.chatID + ", " + msg.username + ", " + msg.text;
-
-  if(MyId != msg.chatID) bot.sendMessage(review, MyId);
   
-  Serial.println(review); 
+  if(MyId != msg.chatID) bot.sendMessage(msg.toString(), MyId);
+  Serial.println(msg.toString()); 
   
+  if(msg.text.length() == 0){
+    bot.sendMessage("Invaid format❌\n Use /help to list available commands", msg.chatID);
+    return; 
+  }
+  
+
   std::vector<String> words = getWordsFromString(msg.text);
 
   if (msg.text == "/reset" or msg.text == "/restart") {bot.sendMessage("Proccecing🔁", msg.chatID);rst = 1;return;}

@@ -17,7 +17,7 @@ String MyId = "xxxxxxxxxx"; //Enter Your Telegram ID
 #include <EncButton.h>
 
 FastBot bot(BOT_TOKEN);
-EncButton<EB_TICK, 0> enc;  
+EncButton<EB_TICK, ButPin> enc;  
 
 int max_bright = 255;         // maximum brightness (0 - 255)
 int ledMode = 2;
@@ -169,7 +169,7 @@ bool dir = true;
 
 void setup()
 {
-  Serial.begin(9600); // open port for communication
+  Serial.begin(115200); // open port for communication
   pinMode(LED_BUILTIN, OUTPUT);
   enc.setStepTimeout(500);
   
