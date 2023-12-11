@@ -1,6 +1,18 @@
 # LEDeffects
 
-<img src="Design/Presentation.gif" width="400"/>
+<p align="center">
+  <br>
+  <img src="https://github.com/astrosander/LEDeffects/assets/69795340/20d35a60-9542-402f-8e23-9ebb58d57504" width="170"/><br><br>
+ <b>Smart home lighting controlled remotely through Telegram</b><br><br><br>
+</p>
+
+
+## Demonstration
+<p align="center">
+  <img src="Design/Presentation.gif" width="400"/><br>
+  Example of work on a ceiling-mounted led strip
+</p>
+
 <details>
   <summary><h1>📜Wiki</h1></summary>
   
@@ -121,7 +133,6 @@
   5. Send send *username*(Ex.: ```astrohelper_bot```)
   6. All right, You just created Your own bot!
 </details>
-
 <details>
   <summary><h2>How to get my id <img align="center"  width="35px" src="Design/myid.jpg" /> </h2> </summary>
   
