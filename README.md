@@ -102,7 +102,7 @@
 
 🔸Open <a href="https://github.com/astrosander/LEDeffects/blob/main/libraries">./libraries</a> and copy all ones to the ```%ArduinoFolder%/libraries```
 
-🔸Open <a href="https://github.com/astrosander/LEDeffects/blob/main/MAIN/MAIN.ino">./MAIN/MAIN.ino</a>
+🔸Open <a href="https://github.com/astrosander/LEDeffects/blob/main/MAIN/MAIN.ino">./MAIN/MAIN.ino</a> (`Arduino IDE 1.8.9` - recommended)
 
 🔸Edit ```8-11``` lines:
 
@@ -116,6 +116,8 @@
   11 - Enter Telegram ID, which You got with <a href="https://github.com/astrosander/LEDeffects/edit/main/README.md#how-to-get-my-id">@IDBot</a>
   </pre> 
   
+🔸In boards manager select ESP8266 with `3.1.2` version
+
 🔸Upload code to Your board
 
 🔸Go to Your bot and send 
@@ -124,17 +126,17 @@
 🔸To turn on/off press and hold ```Flash button```
 
 <details>
-  <summary><h2>How to make telegram-bot <img align="center"  width="40px" src="Design/bot_father.png" /></h2> </summary>
+  <summary><h2>How to create a bot in Telegram <img align="center"  width="40px" src="Design/bot_father.png" /></h2> </summary>
   
   1. You must have telegram
   2. Go to <a href="https://t.me/BotFather">@BotFather</a>
   3. Send ```/newbot```
-  4. Then, send name You woud like to choose(Ex.: ```AstroHelper```)
-  5. Send send *username*(Ex.: ```astrohelper_bot```)
+  4. Then, send name You woud like to choose(Ex.: ```AstroLamp```)
+  5. Send send *username*(Ex.: ```astrolamp_bot```)
   6. All right, You just created Your own bot!
 </details>
 <details>
-  <summary><h2>How to get my id <img align="center"  width="35px" src="Design/myid.jpg" /> </h2> </summary>
+  <summary><h2>How to get my Telegram ID <img align="center"  width="35px" src="Design/myid.jpg" /> </h2> </summary>
   
   1. You must have telegram
   2. Go to <a href="https://t.me/myidbot">@IDBot</a>
