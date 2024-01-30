@@ -2,14 +2,15 @@
 
 <p align="center">
   <br>
-  <img src="https://github.com/astrosander/LEDeffects/assets/69795340/20d35a60-9542-402f-8e23-9ebb58d57504" width="170"/><br><br>
- <b>Smart home lighting controlled remotely through Telegram</b><br><br><br>
+  <img src="https://github.com/astrosander/LEDeffects/assets/69795340/20d35a60-9542-402f-8e23-9ebb58d57504" width="120"/><br><br>
+ <b>Smart home lighting controlled remotely through Telegram</b> <img src="https://github.com/astrosander/LEDeffects/assets/69795340/13af2347-97b6-4198-a371-e7f411cfe91f" height="24"/><br><br><br>
 </p>
 
 
 ## Demonstration
 <p align="center">
-  <img src="Design/Presentation.gif" width="400"/><br>
+  <img src="Design/Presentation.gif" height="300"/>
+  <img src="https://github.com/astrosander/LEDeffects/assets/69795340/8e36ef5e-a446-415b-aa30-75997cec3612" height="300"/><br>
   Example of work on a ceiling-mounted led strip
 </p>
 
