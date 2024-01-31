@@ -3,7 +3,10 @@
 <p align="center">
   <br>
   <img src="https://github.com/astrosander/LEDeffects/assets/69795340/20d35a60-9542-402f-8e23-9ebb58d57504" width="120"/><br><br>
- <b>Smart home lighting controlled remotely through Telegram</b> <img src="https://github.com/astrosander/LEDeffects/assets/69795340/13af2347-97b6-4198-a371-e7f411cfe91f" height="24"/><br><br><br>
+ <b>Smart home lighting controlled remotely through Telegram</b> <img src="https://github.com/astrosander/LEDeffects/assets/69795340/13af2347-97b6-4198-a371-e7f411cfe91f" height="18"/><br><br>
+</p>
+<p>
+  This repository comprises a collection of effects designed for an addressable LED strip based on ESP8266, with remote control capabilities through a Telegram bot. The following sections will outline the instructions for managing the LED strip and the steps to establish its connection for operation.
 </p>
 
 
@@ -18,74 +21,75 @@
   <summary><h1>📜Wiki</h1></summary>
   
   ### 
+
   <pre>
   🔸List of modes from /mode:
-  2 smooth change of colours for the entire ribbon 🌈
-  3 a spinning rainbow 🌪️🌈
-  4 random colour change 🎲🎨
-  5 running LED 🏃‍♂️💡
-  6 a running train of LEDs 🚂💡
-  7 red and blue rotating 🔴🔵🔄
-  8 rotating half red and half blue 🔴🔵🔄
-  9 random strobe light ⚡🎲
-  10 single colour pulsation 💥🎨
-  11 colour changing pulsation 💥🌈
-  12 smooth vertical brightness change (for ring) 🔆🔼🔽
-  13 red LED madness 🔴💡💥
-  14 random colour madness 🎨💥
-  15 white blue red running in a circle 🏃‍♂️🔵⚪🔴🔄
-  16 radiation icon pulsating ☢️💥
-  17 red LED running in a circle 🏃‍♂🔴🔄
-  18 white and blue gradient ⚪🔵🌈
-  19 same thing's going on ⏭️🔄
-  20 red flashes going down 🔴⬇️💥
-  21 crescent moon 🌙
-  22 flame effect 🔥🔥🔥
-  23 rainbow in the vertical plane 🌈🔼🔽
-  24 Pac-Man 🎮😄
-  25 random flash madness 💥💥💥
-  26 police flasher 🚨🔵🔴
-  27 RGB propeller 🔄🔴🟢🔵
-  28 random red flashes in the vertical plane. 💥🎲
-  29 greens running around randomly 🟢🏃‍♂️🔄
-  30 greens running around randomly 🟢🏃‍♂️🔄
-  31 something's broken 🔧
-  32 something's broken 🔧
-  33 smooth colour fills 🎨🔆
-  34 running LEDs 🏃‍♂️💡
-  35 line lights 🚦
-  36 running circle sectors 🔴🟢🔵🔄
-  37 very smooth rotating rainbows 🌈🔄
-  38 random multi-coloured lights 🎨🎲
-  39 running lights 🏃‍♂️💡
-  40 random flashes of white 💥⚪
-  41 random flashes of white on a white background 💥⚪🔳
-  42 running every 3 times 🏃‍♂️🔄⏰
-  43 running every 3 rainbows 🏃‍♂️🔄🌈⏰
-  44 strobe lights ⚡💡💥
-  45 bouncing balls 🏀
-  46 colored bouncing balls 🎨🏀⬆️
-  888 long demo 🎉🎮
-  889 short demo 🎉🎮
-  999 pause ⏸️
+  '\mode 2' smooth change of colours for the entire ribbon 🌈
+  '\mode 3' a spinning rainbow 🌪️🌈
+  '\mode 4' random colour change 🎲🎨
+  '\mode 5' running LED 🏃‍♂️💡
+  '\mode 6' a running train of LEDs 🚂💡
+  '\mode 7' red and blue rotating 🔴🔵🔄
+  '\mode 8' rotating half red and half blue 🔴🔵🔄
+  '\mode 9' random strobe light ⚡🎲
+  '\mode 10' single colour pulsation 💥🎨
+  '\mode 11' colour changing pulsation 💥🌈
+  '\mode 12' smooth vertical brightness change (for ring) 🔆🔼🔽
+  '\mode 13' red LED madness 🔴💡💥
+  '\mode 14' random colour madness 🎨💥
+  '\mode 15' white blue red running in a circle 🏃‍♂️🔵⚪🔴🔄
+  '\mode 16' radiation icon pulsating ☢️💥
+  '\mode 17' red LED running in a circle 🏃‍♂🔴🔄
+  '\mode 18' white and blue gradient ⚪🔵🌈
+  '\mode 19' same thing's going on ⏭️🔄
+  '\mode 20' red flashes going down 🔴⬇️💥
+  '\mode 21' crescent moon 🌙
+  '\mode 22' flame effect 🔥🔥🔥
+  '\mode 23' rainbow in the vertical plane 🌈🔼🔽
+  '\mode 24' Pac-Man 🎮😄
+  '\mode 25' random flash madness 💥💥💥
+  '\mode 26' police flasher 🚨🔵🔴
+  '\mode 27' RGB propeller 🔄🔴🟢🔵
+  '\mode 28' random red flashes in the vertical plane. 💥🎲
+  '\mode 29' greens running around randomly 🟢🏃‍♂️🔄
+  '\mode 30' greens running around randomly 🟢🏃‍♂️🔄
+  '\mode 31' something's broken 🔧
+  '\mode 32' something's broken 🔧
+  '\mode 33' smooth colour fills 🎨🔆
+  '\mode 34' running LEDs 🏃‍♂️💡
+  '\mode 35' line lights 🚦
+  '\mode 36' running circle sectors 🔴🟢🔵🔄
+  '\mode 37' very smooth rotating rainbows 🌈🔄
+  '\mode 38' random multi-coloured lights 🎨🎲
+  '\mode 39' running lights 🏃‍♂️💡
+  '\mode 40' random flashes of white 💥⚪
+  '\mode 41' random flashes of white on a white background 💥⚪🔳
+  '\mode 42' running every 3 times 🏃‍♂️🔄⏰
+  '\mode 43' running every 3 rainbows 🏃‍♂️🔄🌈⏰
+  '\mode 44' strobe lights ⚡💡💥
+  '\mode 45' bouncing balls 🏀
+  '\mode 46' colored bouncing balls 🎨🏀⬆️
+  '\mode 888' long demo 🎉🎮
+  '\mode 889' short demo 🎉🎮
+  '\mode 999' pause ⏸️
   
   🔸List of colors:
-  ⚫️/black
-  ⚪️/white
-  🔴/red
-  🟢/green
-  🔵/blue
-  🟠/orange
-  🟣/lavender
-  🖌️/pxl - drawing pixel-to-pixel(e.g. "/pxl #0000ff 25")
-  🎨/all - to set the same color(e.g. "/all #0000ff")
+  ⚫️'/black'
+  ⚪️'/white'
+  🔴'/red'
+  🟢'/green'
+  🔵'/blue'
+  🟠'/orange'
+  🟣'/lavender'
+  🖌️'/pxl #0000ff 25' - drawing pixel-to-pixel(25 pixel has a #0000ff colour)
+  🎨'/all #0000ff' - to set the same color(all pixels have a #0000ff colour)
   
   🔸Settings:
-  /help - to get commands
-  /mode - to set specific mode(e.g. "/mode 3")
-  /restart - to restart ESP
-  /bright - to set brightness(e.g. "/bright 255")
-  /get_mode - to get current mode
+  '/help' - to get commands
+  '/mode' - to set specific mode(e.g. "/mode 3")
+  '/restart' - to restart ESP
+  '/bright 255' - to set brightness(all pixels have a 255 brightness)
+  '/get_mode' - to get current mode
   
   </pre>
 
